@@ -1,5 +1,5 @@
 import express, { json } from "express";
-import project_router from "./routes/projectRoutes";
+import project_router from "./routes/eventRoutes";
 // import { testConnection } from "./config/sqlConfig";
 import cors from 'cors'
 import user_router from "./routes/userRoutes";
@@ -14,6 +14,8 @@ app.use("/", () => {
 
 
 app.use('/user', user_router)
+app.use('/user', user_router)
+
 
 const PORT = 5000;
 
