@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { userLogin } from '../interfaces/userLogin';
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -12,8 +12,12 @@ import { FormGroup } from '@angular/forms';
 export class LoginComponent {
   loginForm!:FormGroup
   
-  constructor (private userAuth: AuthService, private router: Router){
+  constructor (private fb:FormBuilder,private userAuth: AuthService, private router: Router){
+    this.loginForm = this.fb.group({
+      email: ['',[Validators.required]],
+      password: ['',[Validators.required]],
 
+    })
     
   }
 
@@ -38,6 +42,7 @@ let user_details = this.loginForm.value
         this.errorMessage = ''
         this.loggingIn = false
       }, 3000);
+      
     }else if(response.message){
       this.loggedInState = true
       this.successMessage = response.message

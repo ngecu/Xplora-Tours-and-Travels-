@@ -11,7 +11,8 @@ import { User } from '../interfaces/user';
 export class RegisterComponent {
 
   registrationForm!:FormGroup
-
+  error:boolean = false;
+  errorMessage:string = ''
 
   constructor(private fb:FormBuilder,private authService:AuthService ){
 
@@ -27,7 +28,23 @@ export class RegisterComponent {
   createUser(){
     
     let user_details: User = this.registrationForm.value;
-    this.authService.registerUser(user_details)
+    
+    if(user_details.password != user_details.confirm_password){
+      this.error = true
+      this.errorMessage = "Password Mismatch"
+
+      setTimeout(() => {
+        this.errorMessage = ''
+      this.error = false
+
+      }, 3000);
+
+    }
+    else{
+      this.authService.registerUser(user_details)
+
+    }
+    
 
   }
 

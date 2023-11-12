@@ -6,12 +6,26 @@ import { AppComponent } from './app.component';
 import { RegisterComponent } from './register/register.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './login/login.component';
+import { ProfileComponent } from './profile/profile.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { ToursComponent } from './tours/tours.component';
+import { UsersComponent } from './users/users.component';
+import { IndividualtourComponent } from './individualtour/individualtour.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     RegisterComponent,
-    LoginComponent
+    LoginComponent,
+    ProfileComponent,
+    NavbarComponent,
+    UserDashboardComponent,
+    AdminDashboardComponent,
+    ToursComponent,
+    UsersComponent,
+    IndividualtourComponent
   ],
   imports: [
     AppRoutingModule,
