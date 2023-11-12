@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
+import { User } from '../interfaces/user';
 
 @Component({
   selector: 'app-register',
@@ -25,6 +26,8 @@ export class RegisterComponent {
 
   createUser(){
     
+    let user_details: User = this.registrationForm.value;
+    this.authService.registerUser(user_details)
 
   }
 

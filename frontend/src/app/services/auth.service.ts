@@ -9,7 +9,7 @@ export class AuthService {
   constructor() { }
 
   async registerUser (user:User){
-    fetch("",{
+   let response = await fetch("http://localhost:5000/user/register",{
       headers:{
         "Content-Type":"application/json"
       },
@@ -17,5 +17,10 @@ export class AuthService {
       body:JSON.stringify(user)
       
     })
+
+    const data = await response.json()
+
+    console.log(data)
+
   }
 }
