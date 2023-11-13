@@ -23,6 +23,8 @@ export class AuthService {
 
     console.log(data)
 
+    return data
+
   }
 
   async login(userLogins: userLogin){

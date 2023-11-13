@@ -17,7 +17,7 @@ export class RegisterComponent {
   constructor(private fb:FormBuilder,private authService:AuthService ){
 
     this.registrationForm = this.fb.group({
-      fullName: ['',[Validators.required]],
+      full_name: ['',[Validators.required]],
       email: ['',[Validators.required]],
       phone_number: ['',[Validators.required]],
       password: ['',[Validators.required]],
@@ -25,7 +25,7 @@ export class RegisterComponent {
     })
   }
 
-  createUser(){
+  async createUser(){
     
     let user_details: User = this.registrationForm.value;
     
@@ -41,8 +41,19 @@ export class RegisterComponent {
 
     }
     else{
-      this.authService.registerUser(user_details)
+     let response = await this.authService.registerUser(user_details)
+     if(response.error){
+      this.error = true
+      this.errorMessage = response.error
 
+      setTimeout(() => {
+        this.errorMessage = ''
+      this.error = false
+
+      }, 3000);
+
+
+     }
     }
     
 

@@ -13,6 +13,7 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
 import { ToursComponent } from './tours/tours.component';
 import { UsersComponent } from './users/users.component';
 import { IndividualtourComponent } from './individualtour/individualtour.component';
+import { TourComponent } from './tour/tour.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { IndividualtourComponent } from './individualtour/individualtour.compone
     AdminDashboardComponent,
     ToursComponent,
     UsersComponent,
-    IndividualtourComponent
+    IndividualtourComponent,
+    TourComponent
   ],
   imports: [
     AppRoutingModule,
