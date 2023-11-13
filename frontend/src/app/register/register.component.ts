@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { User } from '../interfaces/user';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -14,7 +15,7 @@ export class RegisterComponent {
   error:boolean = false;
   errorMessage:string = ''
 
-  constructor(private fb:FormBuilder,private authService:AuthService ){
+  constructor(private fb:FormBuilder,private authService:AuthService,private router: Router ){
 
     this.registrationForm = this.fb.group({
       full_name: ['',[Validators.required]],
@@ -52,6 +53,11 @@ export class RegisterComponent {
 
       }, 3000);
 
+
+     }
+
+     else if(response.message){
+          this.router.navigate([''])
 
      }
     }
