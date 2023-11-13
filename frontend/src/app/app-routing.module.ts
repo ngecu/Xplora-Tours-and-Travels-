@@ -9,6 +9,9 @@ import { ToursComponent } from './tours/tours.component';
 import { UsersComponent } from './users/users.component';
 import { SingleuserComponent } from './singleuser/singleuser.component';
 import { UserEditComponent } from './user-edit/user-edit.component';
+import { CategoriesComponent } from './categories/categories.component';
+import { NewCategoryComponent } from './new-category/new-category.component';
+import { NewTourComponent } from './new-tour/new-tour.component';
 
 const routes: Routes = [
   {path:'',component:LoginComponent},
@@ -20,6 +23,10 @@ const routes: Routes = [
   {path:'admin/users',component:UsersComponent},
   {path: 'admin/:user_id', component: SingleuserComponent},
   {path: 'admin/edit/:user_id', component: UserEditComponent},
+  {path: 'new_category', component: NewCategoryComponent},
+  {path: 'new_tour', component: NewTourComponent},
+
+  {path: 'categories', component: CategoriesComponent},
 
 
 

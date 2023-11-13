@@ -16,6 +16,10 @@ import { IndividualtourComponent } from './individualtour/individualtour.compone
 import { TourComponent } from './tour/tour.component';
 import { SingleuserComponent } from './singleuser/singleuser.component';
 import { UserEditComponent } from './user-edit/user-edit.component';
+import { CreateCategoryComponent } from './create-category/create-category.component';
+import { CategoriesComponent } from './categories/categories.component';
+import { NewCategoryComponent } from './new-category/new-category.component';
+import { NewTourComponent } from './new-tour/new-tour.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +35,10 @@ import { UserEditComponent } from './user-edit/user-edit.component';
     IndividualtourComponent,
     TourComponent,
     UserEditComponent,
+    CreateCategoryComponent,
+    CategoriesComponent,
+    NewCategoryComponent,
+    NewTourComponent,
     // SingleuserComponent
   ],
   imports: [

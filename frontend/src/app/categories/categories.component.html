@@ -1,0 +1,45 @@
+
+<app-navbar></app-navbar>
+
+<div class="container mx-auto mt-8 text-center">
+
+
+  <div class="bg-white p-4 rounded shadow-md mt-8">
+    <h2 class="text-2xl font-semibold mb-4">Registers Tour Users</h2>
+  
+    <table class="w-full border-collapse border border-gray-300">
+        <thead>
+          <tr>
+            <th class="py-2 px-4 border-b">Name</th>
+            <th class="py-2 px-4 border-b">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Show this row if categories array is empty -->
+          <tr *ngIf="categories.length === 0">
+            <td colspan="2" class="text-center py-4">
+              No categories available. <button (click)="navigateToNewCategory()">Create a new category</button>.
+            </td>
+          </tr>
+      
+          <!-- Show rows for each category -->
+          <tr *ngFor="let cat of categories; let i = index" class="hover:bg-gray-100">
+            <td class="py-2 px-4 border-b">{{ cat.category_name }}</td>
+            <td class="py-2 px-4 border-b space-x-2">
+              <button class="text-green-500 hover:text-white hover:bg-green-500 px-2 py-1 rounded cursor-pointer" (click)="editProfile(cat)">
+                Edit
+              </button>
+              <button class="text-red-500 hover:text-white hover:bg-red-500 px-2 py-1 rounded cursor-pointer" (click)="deleteUser(cat)">
+                Delete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      
+  </div>
+  
+  
+
+</div>
