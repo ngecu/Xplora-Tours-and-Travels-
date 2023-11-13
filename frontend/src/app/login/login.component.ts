@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { userLogin } from '../interfaces/userLogin';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UsersService } from '../services/users.service';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class LoginComponent {
   loginForm!:FormGroup
   
-  constructor (private fb:FormBuilder,private userAuth: AuthService, private router: Router){
+  constructor (private fb:FormBuilder,private userAuth: AuthService, private router: Router,private userService: UsersService, ){
     this.loginForm = this.fb.group({
       email: ['',[Validators.required]],
       password: ['',[Validators.required]],
@@ -50,20 +51,20 @@ let user_details = this.loginForm.value
 
       localStorage.setItem('loggedIn', `${this.loggedIn}`)  
 
-      // let role = await this.employeeService.checkDetails()
+      let role = await this.userService.checkDetails()
       
-      // console.log(role);
+      console.log(role);
       
 
       setTimeout( async() => {
         this.successMessage = ''
         this.loggedInState = false
         
-        // if(role == 'admin'){
-        //   this.router.navigate(['admin'])
-        // }else if(role == 'employee'){
-        //   this.router.navigate(['employee'])
-        // }
+        if(role == 1){
+          this.router.navigate(['admin'])
+        }else if(role == 0){
+          this.router.navigate(['user'])
+        }
       }, 2000);
  
     }
