@@ -5,28 +5,38 @@
 
 
   <div class="bg-white p-4 rounded shadow-md mt-8">
-    <h2 class="text-2xl font-semibold mb-4">Tour Management Data Table</h2>
-    <table class="min-w-full table-auto">
+    <h2 class="text-2xl font-semibold mb-4">Registers Tour Users</h2>
+  
+    <table class="w-full border-collapse border border-gray-300">
       <thead>
         <tr>
-          <th class="border px-4 py-2">Destination</th>
-          <th class="border px-4 py-2">Duration</th>
-          <th class="border px-4 py-2">Price</th>
+          <th class="py-2 px-4 border-b">Full Name</th>
+          <th class="py-2 px-4 border-b">Email</th>
+          <th class="py-2 px-4 border-b">Phone Number</th>
+          <th class="py-2 px-4 border-b">Actions</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td class="border px-4 py-2">Destination 1</td>
-          <td class="border px-4 py-2">5 days</td>
-          <td class="border px-4 py-2">$500</td>
-        </tr>
-        <tr>
-          <td class="border px-4 py-2">Destination 2</td>
-          <td class="border px-4 py-2">7 days</td>
-          <td class="border px-4 py-2">$700</td>
+        <tr *ngFor="let user of users; let i = index" class="hover:bg-gray-100">
+          <td class="py-2 px-4 border-b">{{ user.full_name }}</td>
+          <td class="py-2 px-4 border-b">{{ user.email }}</td>
+          <td class="py-2 px-4 border-b">{{ user.phone_number }}</td>
+          <td class="py-2 px-4 border-b space-x-2">
+            <button class="text-blue-500 hover:text-white hover:bg-blue-500 px-2 py-1 rounded cursor-pointer" (click)="showProfileDetails(user)">
+              Profile Details
+            </button>
+            <button class="text-green-500 hover:text-white hover:bg-green-500 px-2 py-1 rounded cursor-pointer" (click)="editProfile(user)">
+              Edit Profile
+            </button>
+            <button class="text-red-500 hover:text-white hover:bg-red-500 px-2 py-1 rounded cursor-pointer" (click)="deleteUser(user)">
+              Delete User
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>
   </div>
+  
+  
 
 </div>

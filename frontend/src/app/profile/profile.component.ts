@@ -11,7 +11,7 @@ export class ProfileComponent {
 
   constructor (){
     this.currentUser = {
-      fullName:"Robin",
+      full_name:"Robin",
       email:"devngecu@gmail.com",
       password:"I@mrich254",
       confirm_password:"I@mrich254",

@@ -14,6 +14,8 @@ import { ToursComponent } from './tours/tours.component';
 import { UsersComponent } from './users/users.component';
 import { IndividualtourComponent } from './individualtour/individualtour.component';
 import { TourComponent } from './tour/tour.component';
+import { SingleuserComponent } from './singleuser/singleuser.component';
+import { UserEditComponent } from './user-edit/user-edit.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import { TourComponent } from './tour/tour.component';
     ToursComponent,
     UsersComponent,
     IndividualtourComponent,
-    TourComponent
+    TourComponent,
+    UserEditComponent,
+    // SingleuserComponent
   ],
   imports: [
     AppRoutingModule,

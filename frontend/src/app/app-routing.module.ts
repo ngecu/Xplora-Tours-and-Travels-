@@ -7,6 +7,8 @@ import { UserDashboardComponent } from './user-dashboard/user-dashboard.componen
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { ToursComponent } from './tours/tours.component';
 import { UsersComponent } from './users/users.component';
+import { SingleuserComponent } from './singleuser/singleuser.component';
+import { UserEditComponent } from './user-edit/user-edit.component';
 
 const routes: Routes = [
   {path:'',component:LoginComponent},
@@ -16,6 +18,9 @@ const routes: Routes = [
   {path:'admin',component:AdminDashboardComponent},
   {path:'admin/tours',component:ToursComponent},
   {path:'admin/users',component:UsersComponent},
+  {path: 'admin/:user_id', component: SingleuserComponent},
+  {path: 'admin/edit/:user_id', component: UserEditComponent},
+
 
 
 
