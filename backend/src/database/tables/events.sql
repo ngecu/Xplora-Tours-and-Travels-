@@ -1,5 +1,6 @@
 CREATE TABLE events (
     event_id VARCHAR(500) PRIMARY KEY ,
+    image VARCHAR(500),
     destination VARCHAR(255) NOT NULL,
     duration INT NOT NULL,
     start_date VARCHAR(255) NOT NULL,

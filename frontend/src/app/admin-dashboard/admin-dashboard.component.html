@@ -1,10 +1,10 @@
 <app-navbar></app-navbar>
 
-<div class="container mx-auto mt-8 text-center">
-    <h1 class="text-4xl font-semibold mb-4">Welcome to the Tour Management System</h1>
+<div class="container m-2 w-[80vw] block mx-auto justify-center items-center">
   
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div class="bg-white p-4 rounded shadow-md">
+          <img src="https://www.trolleytours.com/wp-content/uploads/2016/07/trolley-tours-of-key-west.jpg" alt="">
         <h2 class="text-2xl font-semibold mb-4">Tour Management</h2>
         <p>Manage tours, including adding, updating, and soft-deleting.</p>
         <a routerLink="/admin/tours" class="text-blue-500 mt-2 block">Go to Tour Management</a>
@@ -12,12 +12,15 @@
   
       <!-- Profile Management -->
       <div class="bg-white p-4 rounded shadow-md">
+        <img src="https://avada.website/tour-operator/wp-content/uploads/sites/169/2022/06/tour-operator-hero-1.jpg" alt="">
+
         <h2 class="text-2xl font-semibold mb-4">Profile Management</h2>
         <p>Manage your admin profile.</p>
         <a routerLink="/profile" class="text-blue-500 mt-2 block">Go to Profile Management</a>
       </div>
 
       <div class="bg-white p-4 rounded shadow-md">
+        <img src="https://5.imimg.com/data5/OO/IE/MY-65454572/tour-travels-500x500.jpg" alt="">
         <h2 class="text-2xl font-semibold mb-4">Tour Type Management</h2>
         <p>Manage your Tour categories</p>
         <a routerLink="/categories" class="text-blue-500 mt-2 block">Go to Profile Management</a>
@@ -26,46 +29,34 @@
   
       <!-- User Account Management -->
       <div class="bg-white p-4 rounded shadow-md">
+        <img src="https://avada.website/tour-operator/wp-content/uploads/sites/169/2022/06/tour-operator-hero-1.jpg" alt="">
+
         <h2 class="text-2xl font-semibold mb-4">User Account Management</h2>
         <p>Manage user accounts.</p>
         <a routerLink="/admin/users" class="text-blue-500 mt-2 block">Go to User Account Management</a>
       </div>
+
+      <div class="bg-white p-4 rounded shadow-md">
+        <img src="https://assets.thehansindia.com/h-upload/2019/12/27/248830-worldtour.jpg" alt="">
+        <h2 class="text-2xl font-semibold mb-4">User Bookings Management</h2>
+        <p>Manage user bookings</p>
+        <a routerLink="/admin/bookings" class="text-blue-500 mt-2 block">Go to User Booking Management</a>
+      </div>
+
+      <div class="bg-white p-4 rounded shadow-md">
+        <img src="https://www.mumbaitourstravels.com/images_marquee/tours-and-travels1.jpeg" alt="">
+        <h2 class="text-2xl font-semibold mb-4">User Reviews Management</h2>
+        <p>Manage user reviews.</p>
+        <a routerLink="/admin/reviews" class="text-blue-500 mt-2 block">Go to User Booking Management</a>
+      </div>
   
     </div>
 
-    <div class="bg-white p-4 rounded shadow-md mt-8">
-        <h2 class="text-2xl font-semibold mb-4">Tour Management Data Table</h2>
-        <table class="min-w-full table-auto">
-          <thead>
-            <tr>
-              <th class="border px-4 py-2">Destination</th>
-              <th class="border px-4 py-2">Duration</th>
-              <th class="border px-4 py-2">Price</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="border px-4 py-2">Destination 1</td>
-              <td class="border px-4 py-2">5 days</td>
-              <td class="border px-4 py-2">$500</td>
-            </tr>
-            <tr>
-              <td class="border px-4 py-2">Destination 2</td>
-              <td class="border px-4 py-2">7 days</td>
-              <td class="border px-4 py-2">$700</td>
-            </tr>
-            <!-- Add more rows as needed with your dummy data -->
-          </tbody>
-        </table>
-      </div>
+   
         
-      <!-- User Account Management Data Table -->
-      <div class="bg-white p-4 rounded shadow-md mt-8">
-        <h2 class="text-2xl font-semibold mb-4">User Account Management Data Table</h2>
-        <table class="min-w-full table-auto">
-          <!-- Similar structure as above -->
-        </table>
-      </div>
+     
 
   </div>
   
+
+  <app-footer></app-footer>

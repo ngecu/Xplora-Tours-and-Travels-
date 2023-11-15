@@ -20,6 +20,11 @@ import { CreateCategoryComponent } from './create-category/create-category.compo
 import { CategoriesComponent } from './categories/categories.component';
 import { NewCategoryComponent } from './new-category/new-category.component';
 import { NewTourComponent } from './new-tour/new-tour.component';
+import { BookingsComponent } from './bookings/bookings.component';
+import { ReviewsComponent } from './reviews/reviews.component';
+import { LandingComponent } from './landing/landing.component';
+import { FooterComponent } from './footer/footer.component';
+import { NewBookingComponent } from './new-booking/new-booking.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +44,12 @@ import { NewTourComponent } from './new-tour/new-tour.component';
     CategoriesComponent,
     NewCategoryComponent,
     NewTourComponent,
-    // SingleuserComponent
+    BookingsComponent,
+    LandingComponent,
+    ReviewsComponent,
+    FooterComponent,
+    SingleuserComponent,
+    NewBookingComponent
   ],
   imports: [
     AppRoutingModule,

@@ -14,6 +14,7 @@ export class RegisterComponent {
   registrationForm!:FormGroup
   error:boolean = false;
   errorMessage:string = ''
+  successMessage:string = ''
 
   constructor(private fb:FormBuilder,private authService:AuthService,private router: Router ){
 
@@ -57,7 +58,12 @@ export class RegisterComponent {
      }
 
      else if(response.message){
-          this.router.navigate([''])
+      this.successMessage = "user Registered successfully"
+
+           setTimeout( async() => {     
+
+          this.router.navigate(['/login'])
+        }, 2000);
 
      }
     }

@@ -1,6 +1,76 @@
-<div class="cards">
-    <div class="card">
-        <h1>{{user[0].full_name}}</h1>
-       
+<app-navbar></app-navbar>
+
+<div class="container mx-auto mt-8">
+
+    <!-- Tour Details Section -->
+    <div class="flex">
+      <!-- Left Image -->
+      <div class="w-1/2">
+        <img src="https://a0.muscache.com/im/pictures/miso/Hosting-21006026/original/f954e978-8c8a-4fd1-a274-0cee9ee01609.jpeg?im_w=720" alt="Tour Image Left" class="w-full h-auto">
+      </div>
+  
+      <!-- Right Details -->
+      <div class="w-1/2 pl-8">
+        <h2 class="text-3xl font-semibold mb-4"> {{user[0].full_name}}</h2>
+        
+
+
+        <p class="text-gray-600 mb-4">
+            Email : 
+        <br/>
+
+        <br/>
+
+
+        {{user[0].email}}
+
+
+
+        
+        <p class="text-gray-600 mb-4">
+            Phone Number : 
+        <br/>
+
+        <br/>
+        
+
+        {{user[0].phone_number}}
+
+        </p>
+
+
+  
+        <h2>Tours i have gone </h2>
+        <!-- Cart Card -->
+        <div class="bg-white p-4 rounded-lg shadow-md mb-4">
+          <!-- Cart details go here -->
+          <!-- Example: -->
+          <p>Malasia</p>
+        </div>
+
+
+        <div class="bg-white p-4 rounded-lg shadow-md mb-4">
+            <!-- Cart details go here -->
+            <!-- Example: -->
+            <p>Malasia</p>
+          </div>
+
+
+
+          <div class="bg-white p-4 rounded-lg shadow-md mb-4">
+            <!-- Cart details go here -->
+            <!-- Example: -->
+            <p>Malasia</p>
+          </div>
+
+
+          
+
+
+
+      </div>
     </div>
-</div>
+
+  </div>
+  <app-footer></app-footer>
+  

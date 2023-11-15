@@ -12,23 +12,33 @@ import { UserEditComponent } from './user-edit/user-edit.component';
 import { CategoriesComponent } from './categories/categories.component';
 import { NewCategoryComponent } from './new-category/new-category.component';
 import { NewTourComponent } from './new-tour/new-tour.component';
+import { BookingsComponent } from './bookings/bookings.component';
+import { ReviewsComponent } from './reviews/reviews.component';
+import { LandingComponent } from './landing/landing.component';
+import { TourComponent } from './tour/tour.component';
+import { NewBookingComponent } from './new-booking/new-booking.component';
 
 const routes: Routes = [
-  {path:'',component:LoginComponent},
+  {path:'',component:LandingComponent},
+  {path:'login',component:LoginComponent},
+
   {path:'register',component:RegisterComponent},
   {path:'profile',component:ProfileComponent},
   {path:'user',component:UserDashboardComponent},
   {path:'admin',component:AdminDashboardComponent},
   {path:'admin/tours',component:ToursComponent},
   {path:'admin/users',component:UsersComponent},
-  {path: 'admin/:user_id', component: SingleuserComponent},
   {path: 'admin/edit/:user_id', component: UserEditComponent},
+  {path: 'admin/bookings', component: BookingsComponent},
+  {path: 'admin/reviews', component: ReviewsComponent},
+
   {path: 'new_category', component: NewCategoryComponent},
   {path: 'new_tour', component: NewTourComponent},
 
   {path: 'categories', component: CategoriesComponent},
-
-
+  {path: 'admin/:user_id', component: SingleuserComponent},
+  {path: 'tour/1', component: TourComponent},
+  {path: 'new_booking', component: NewBookingComponent},
 
 
 ];

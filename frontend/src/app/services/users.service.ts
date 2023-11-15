@@ -34,9 +34,13 @@ export class UsersService {
 
     let data = await res.json()
 
-    let role = data.info.role
+    console.log(data.info);
+    
 
-    return role
+    let role = data.info.role
+    let name = data.info.full_name
+
+    return {role,name}
   }
 
   async getOneUser(user_id: string){

@@ -12,6 +12,7 @@ export class NavbarComponent implements OnInit{
   // loggedIn!:boolean
 
   loggedInTrue = localStorage.getItem('loggedIn')
+  name = localStorage.getItem('name')
 
   loggedIn = this.loggedInTrue
 

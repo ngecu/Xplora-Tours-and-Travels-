@@ -20,7 +20,7 @@ export const verifyToken = (req:ExtendedUser, res:Response, next:NextFunction) =
             })
         }
 
-        const data = jwt.verify(token, process.env.SECRET as string) as Employee
+        const data = jwt.verify(token, process.env.SECRET as string) as User
 
         req.info = data
         

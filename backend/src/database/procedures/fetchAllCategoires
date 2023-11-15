@@ -1,0 +1,6 @@
+CREATE OR ALTER PROCEDURE fetchAlCategories
+AS
+BEGIN
+    SELECT * FROM categories
+END
+ 

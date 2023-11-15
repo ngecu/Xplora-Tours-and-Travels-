@@ -22,6 +22,9 @@ export class SingleuserComponent {
     
     this.route.params.subscribe(params=>{
       this.id = params['user_id']
+
+      console.log(this.id);
+      
     })
 
     let user_d =  await this.usersService.getOneUser(this.id)

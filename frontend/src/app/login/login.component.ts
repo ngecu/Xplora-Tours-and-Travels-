@@ -23,6 +23,10 @@ export class LoginComponent {
   }
 
   errorMessage:string = ''
+  email:string = ''
+  name:string = ''
+
+
   successMessage:string = ''
   loggingIn:boolean = false
   loggedInState:boolean = false
@@ -48,10 +52,13 @@ let user_details = this.loginForm.value
       this.loggedInState = true
       this.successMessage = response.message
       this.loggedIn = true
-
+      let {role,name} = await this.userService.checkDetails()
       localStorage.setItem('loggedIn', `${this.loggedIn}`)  
+      localStorage.setItem('name', `${name}`)  
 
-      let role = await this.userService.checkDetails()
+
+    
+      
       
       console.log(role);
       
@@ -60,6 +67,8 @@ let user_details = this.loginForm.value
         this.successMessage = ''
         this.loggedInState = false
         
+        
+
         if(role == 1){
           this.router.navigate(['admin'])
         }else if(role == 0){
