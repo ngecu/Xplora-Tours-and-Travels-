@@ -112,7 +112,9 @@ async updateProfile() {
      }
 
 
-    alert("Profile updated successfully!");
+    alert("Profile updated successfully! Please sign in again");
+    this.router.navigate(['login'])
+    localStorage.clear()
   }
 
 }
