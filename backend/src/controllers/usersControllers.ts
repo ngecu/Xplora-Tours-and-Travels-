@@ -162,16 +162,10 @@ export const activateUser = async (req: Request, res: Response) => {
 
 export const manageProfile = async (req: Request, res: Response) => {
     try {
-        const { current_password, new_password, email } = req.body;
+        const { new_password, email } = req.body;
         console.log(req.body);
         
-        // Validate the request body using Joi or your preferred validation library
-        // I'm assuming you have a validation schema named manageProfileSchema
-        // const { error } = manageProfileSchema.validate(req.body);
-        // if (error) {
-        //     return res.status(400).json({ error: error.details[0].message });
-        // }
-
+    
         // Check if the email exists in the database
         const emailExists = (await dbhelper.query(`SELECT * FROM users WHERE email = '${email}'`)).recordset;
 
@@ -179,13 +173,7 @@ export const manageProfile = async (req: Request, res: Response) => {
             return res.status(404).json({ error: "Email not found" });
         }
 
-        // Check if the current password matches the stored hashed password
-        const storedPassword = emailExists[0].password;
-        const isPasswordValid = await bcrypt.compare(current_password, storedPassword);
-
-        if (!isPasswordValid) {
-            return res.status(401).json({ error: "Incorrect current password" });
-        }
+ 
 
         // Hash the new password
         const hashedNewPassword = await bcrypt.hash(new_password, 10);
@@ -201,6 +189,8 @@ export const manageProfile = async (req: Request, res: Response) => {
         });
 
     } catch (error) {
+        console.log(error);
+        
         return res.status(500).json({
             error: error.message
         });

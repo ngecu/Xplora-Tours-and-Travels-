@@ -40,6 +40,9 @@ export class ProfileComponent {
 
 
     this.profileForm = this.fb.group({
+      full_name: [this.fullName, [Validators.required]],
+      email: [this.email, [Validators.required, Validators.email]],
+      phone_number: [this.phoneNumber, [Validators.required]],
       password: ['',[Validators.required]],
       confirm_password: ['',[Validators.required]],
     })
@@ -55,6 +58,9 @@ export class ProfileComponent {
       email: this.email || "default@example.com",
       phone_number: this.phoneNumber || "123456789"
     };
+
+
+
   }
 
 async updateProfile() {
@@ -68,15 +74,16 @@ async updateProfile() {
     // Your logic to update the user profile
     // For example, you might want to send an API request to update the user details
 
-    // Reset the password fields after updating
-    this.newPassword = '';
-    this.confirmPassword = '';
+    // // Reset the password fields after updating
+    // this.newPassword = '';
+    // this.confirmPassword = '';
 
-    const x = this.profileForm.value
 
-    console.log(x)
+    const x = this.profileForm.value.password
 
-    let response = await this.authService.resetPassword(this.email,this.newPassword)
+    console.log("profile value is",x)
+
+    let response = await this.authService.resetPassword(this.email,x)
 
     if(response.error){
       this.error = true

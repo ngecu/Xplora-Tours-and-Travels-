@@ -49,7 +49,7 @@ export class AuthService {
   async resetPassword(email: string, newPassword: string): Promise<any> {
     const resetData = {
       email: email,
-      newPassword: newPassword,
+      new_password: newPassword,
     };
 
     try {

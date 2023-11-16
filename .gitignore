@@ -1,6 +1,8 @@
 
 background-services/node_modules
 frontend/node_modules
+backend/dist
+
 
 node_modules
 ./node_modules
