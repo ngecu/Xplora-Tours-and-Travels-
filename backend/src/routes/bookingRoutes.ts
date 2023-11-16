@@ -7,7 +7,7 @@ const bookingRouter = Router();
 bookingRouter.post('/create', createBooking);
 bookingRouter.get('/allBookings', verifyToken, getAllBookings);
 bookingRouter.get('/:id', verifyToken, getOneBooking);
-bookingRouter.get('user/:id', verifyToken, getUserBookings);
+bookingRouter.get('/user/:id', verifyToken, getUserBookings);
 
 bookingRouter.delete('/:booking_id', verifyToken, deleteBooking);
 

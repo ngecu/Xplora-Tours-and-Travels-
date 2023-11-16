@@ -53,9 +53,9 @@ export const getAllBookings = async (req: ExtendedUser, res: Response) => {
 
 export const getUserBookings = async (req: Request, res: Response) => {
   try {
-    let id = req.params.id;
+    let user_id = req.params.id;
 
-    const booking = (await dbhelper.query(`EXEC getBookingById @booking_id = '${id}'`)).recordset;
+    const booking = (await dbhelper.query(`EXEC getBookingById @user_id = '${user_id}'`)).recordset;
 
     return res.status(200).json({
       booking: booking,

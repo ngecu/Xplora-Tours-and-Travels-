@@ -6,7 +6,8 @@
   <ul
   class="mb-5 flex list-none flex-row flex-wrap border-b-0 pl-0"
   role="tablist"
-  data-te-nav-ref>
+  data-te-nav-ref
+>
   <li role="presentation" class="flex-auto text-center">
     <a
       href="#tabs-home01"
@@ -36,191 +37,64 @@
 </ul>
 
 <!--Tabs content-->
-<div class="mb-6">
+<div class="mb-6 w-full">
   <div
-    class="hidden opacity-100 transition-opacity duration-150 ease-linear data-[te-tab-active]:block"
-    id="tabs-home01"
-    role="tabpanel"
-    aria-labelledby="tabs-home-tab01"
-    data-te-tab-active>
+  class="hidden opacity-100 transition-opacity duration-150 ease-linear data-[te-tab-active]:block"
+  id="tabs-home01"
+  role="tabpanel"
+  aria-labelledby="tabs-home-tab01"
+  data-te-tab-active
+    >
     
     
 
 
-    <div class="bg-white p-4 rounded shadow-md">
-      <h2 class="text-2xl font-semibold mb-4">Your Bookings</h2>
+    <div class="bg-white p-4 rounded shadow-md text-center">
+      <h2 class="text-2xl font-semibold mb-4">Your Bookings {{bookings.length}}</h2>
       <ul>
         <li *ngFor="let booking of bookings" class="mb-2">
           {{ booking.destination }} - {{ booking.date }} - {{ booking.price }}
         </li>
         <div *ngIf="bookings.length === 0" class="text-gray-500">No bookings yet.
-
-          <a routerLink="/new_booking">Book Now </a>
+          <a routerLink="/new_booking" class="text-blue-500">Book Now</a>
         </div>
       </ul>
     </div>
+    
 
 
 
   </div>
   <div
-    class="hidden opacity-0 transition-opacity duration-150 ease-linear data-[te-tab-active]:block"
-    id="tabs-profile01"
-    role="tabpanel"
-    aria-labelledby="tabs-profile-tab01">
+  class="hidden opacity-0 transition-opacity duration-150 ease-linear data-[te-tab-active]:block"
+  id="tabs-profile01"
+  role="tabpanel"
+  aria-labelledby="tabs-profile-tab01">
     
-
-    <div class="bg-white p-4 rounded shadow-md">
+    <div class="bg-white p-4 rounded shadow-md text-center">
       <h2 class="text-2xl font-semibold mb-4">Your Reviews</h2>
       <ul>
         <li *ngFor="let booking of bookings" class="mb-2">
           {{ booking.destination }} - {{ booking.date }} - {{ booking.price }}
         </li>
-        <div *ngIf="bookings.length === 0" class="text-gray-500">No bookings yet.
-
+        <div *ngIf="bookings.length === 0" class="text-gray-500">
+          No bookings yet. Make your first reservation with us!
           <a routerLink="/new_booking" class="text-blue-500">Book Now</a>
-
         </div>
       </ul>
     </div>
+    
 
   </div>
-  <div
-    class="hidden opacity-0 transition-opacity duration-150 ease-linear data-[te-tab-active]:block"
-    id="tabs-messages01"
-    role="tabpanel"
-    aria-labelledby="tabs-profile-tab01">
-    Tab 3 content
-  </div>
-  <div
-    class="hidden opacity-0 transition-opacity duration-150 ease-linear data-[te-tab-active]:block"
-    id="tabs-contact01"
-    role="tabpanel"
-    aria-labelledby="tabs-contact-tab01">
-    Tab 4 content
-  </div>
+  
 </div>
 
-
-
-    
-  
-      <!-- Bookings Section -->
-   
-  
-      <!-- Reviews Section -->
-      <!-- <div class="bg-white p-4 rounded shadow-md">
-        <h2 class="text-2xl font-semibold mb-4">Your Reviews</h2>
-        <ul>
-          <li *ngFor="let review of reviews" class="mb-2">
-            {{ review.destination }} - {{ review.rating }} stars - {{ review.comment }}
-          </li>
-          <div *ngIf="bookings.length === 0" class="text-gray-500">Please book with us to make reviews</div>
-          
-        </ul>
-      </div> -->
-  
-    
-
-
-
-    <section class="mt-8">
-      <div class="flex justify-between items-center mb-4">
-        <h2 class="text-3xl mb-4">Upcoming Tours</h2>
-        <a routerLink="/admin/tours" class="text-blue-500 hover:underline">See More</a>
-      </div>
-      
-    
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-         <!-- Filled dynamically with JavaScript or server data -->
-       
-         <div class="bg-white rounded-md overflow-hidden shadow-md">
-          <img src="https://tembeatujengekenya.com/wp-content/uploads/2014/06/staycation-773x520.jpeg" alt="Tour Image" class="w-full h-48 object-cover mb-4">
-          <div class="p-4">
-            <h3 class="text-xl font-semibold mb-2">Safari Adventure</h3>
-            <p class="text-gray-600 mb-4">Experience the beauty of Kenyan wildlife on this exciting safari adventure.</p>
-            <p class="text-sm text-gray-500">
-              Kenya 7 Days $1500
-            </p>
-          </div>
-        
-          <div class="bg-gray-100 py-2 px-4 flex justify-between items-center">
-            <a routerLink="tour/1" class="view-btn text-blue-500 hover:underline">View Details</a>
-            <div class="flex space-x-2">
-              <!-- <button class="bg-yellow-500 text-white px-3 py-1 rounded">View More</button> -->
-              <!-- <button class="bg-red-500 text-white px-3 py-1 rounded">Delete</button> -->
-            </div>
-          </div>
-        </div>
-
-
-        <div class="bg-white rounded-md overflow-hidden shadow-md">
-          <img src="https://tembeatujengekenya.com/wp-content/uploads/2014/06/staycation-773x520.jpeg" alt="Tour Image" class="w-full h-48 object-cover mb-4">
-          <div class="p-4">
-            <h3 class="text-xl font-semibold mb-2">Safari Adventure</h3>
-            <p class="text-gray-600 mb-4">Experience the beauty of Kenyan wildlife on this exciting safari adventure.</p>
-            <p class="text-sm text-gray-500">
-              Kenya 7 Days $1500
-            </p>
-          </div>
-        
-          <div class="bg-gray-100 py-2 px-4 flex justify-between items-center">
-            <a routerLink="tour/1" class="view-btn text-blue-500 hover:underline">View Details</a>
-            <div class="flex space-x-2">
-              <!-- <button class="bg-yellow-500 text-white px-3 py-1 rounded">View More</button> -->
-              <!-- <button class="bg-red-500 text-white px-3 py-1 rounded">Delete</button> -->
-            </div>
-          </div>
-        </div>
-
-
-
-        <div class="bg-white rounded-md overflow-hidden shadow-md">
-          <img src="https://tembeatujengekenya.com/wp-content/uploads/2014/06/staycation-773x520.jpeg" alt="Tour Image" class="w-full h-48 object-cover mb-4">
-          <div class="p-4">
-            <h3 class="text-xl font-semibold mb-2">Safari Adventure</h3>
-            <p class="text-gray-600 mb-4">Experience the beauty of Kenyan wildlife on this exciting safari adventure.</p>
-            <p class="text-sm text-gray-500">
-              Kenya 7 Days $1500
-            </p>
-          </div>
-        
-          <div class="bg-gray-100 py-2 px-4 flex justify-between items-center">
-            <a routerLink="tour/1" class="view-btn text-blue-500 hover:underline">View Details</a>
-            <div class="flex space-x-2">
-              <!-- <button class="bg-yellow-500 text-white px-3 py-1 rounded">View More</button> -->
-              <!-- <button class="bg-red-500 text-white px-3 py-1 rounded">Delete</button> -->
-            </div>
-          </div>
-        </div>
-
-
-
-        <div class="bg-white rounded-md overflow-hidden shadow-md">
-          <img src="https://tembeatujengekenya.com/wp-content/uploads/2014/06/staycation-773x520.jpeg" alt="Tour Image" class="w-full h-48 object-cover mb-4">
-          <div class="p-4">
-            <h3 class="text-xl font-semibold mb-2">Safari Adventure</h3>
-            <p class="text-gray-600 mb-4">Experience the beauty of Kenyan wildlife on this exciting safari adventure.</p>
-            <p class="text-sm text-gray-500">
-              Kenya 7 Days $1500
-            </p>
-          </div>
-        
-          <div class="bg-gray-100 py-2 px-4 flex justify-between items-center">
-            <a routerLink="tour/1" class="view-btn text-blue-500 hover:underline">View Details</a>
-            <div class="flex space-x-2">
-              <!-- <button class="bg-yellow-500 text-white px-3 py-1 rounded">View More</button> -->
-              <!-- <button class="bg-red-500 text-white px-3 py-1 rounded">Delete</button> -->
-            </div>
-          </div>
-        </div>
 
         
 
        </div>
-    </section>
+   
 
 
-  </div>
 
   <app-footer></app-footer>

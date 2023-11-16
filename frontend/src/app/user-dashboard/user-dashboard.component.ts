@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { Booking } from '../interfaces/booking';
 import { Review } from '../interfaces/review';
 import { Modal, Ripple, initTE, Tab, Input } from 'tw-elements';
+import { BookingsService } from '../services/bookings.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-user-dashboard',
   templateUrl: './user-dashboard.component.html',
@@ -11,10 +13,25 @@ export class UserDashboardComponent {
   bookings: Booking[] = [];
   reviews: Review[] = [];
 
-  showSadImage: boolean = true;
+  constructor(private bookingsService: BookingsService, private router: Router){
+    // this.fetchEmployees()
 
+    this.getMyBookings()
+  }
+  
+
+  showSadImage: boolean = true;
+  user_id = localStorage.getItem('user_id') as string
   ngOnInit() {
     initTE({ Tab, Input });
   }
+
+    async getMyBookings(){
+    let response = await this.bookingsService.getUserBookings(this.user_id)
+  console.log(response);
+
+  this.bookings = response.bookings
   
+  }
+
 }

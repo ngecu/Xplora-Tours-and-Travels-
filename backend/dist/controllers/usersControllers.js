@@ -86,7 +86,7 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 });
             }
             const LoginCredentials = user.map(records => {
-                const { phone_number, password } = records, rest = __rest(records, ["phone_number", "password"]);
+                const { password } = records, rest = __rest(records, ["password"]);
                 return rest;
             });
             const token = jsonwebtoken_1.default.sign(LoginCredentials[0], process.env.SECRET);

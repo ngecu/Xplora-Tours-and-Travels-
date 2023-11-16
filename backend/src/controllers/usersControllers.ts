@@ -82,7 +82,7 @@ export const loginUser = async(req: Request, res: Response) => {
             }
 
             const LoginCredentials = user.map(records => {
-                const { phone_number, password, ...rest } = records;
+                const { password, ...rest } = records;
                 return rest;
             });
 

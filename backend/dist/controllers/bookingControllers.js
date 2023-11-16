@@ -56,8 +56,8 @@ const getAllBookings = (req, res) => __awaiter(void 0, void 0, void 0, function*
 exports.getAllBookings = getAllBookings;
 const getUserBookings = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        let id = req.params.id;
-        const booking = (yield dbhelper.query(`EXEC getBookingById @booking_id = '${id}'`)).recordset;
+        let user_id = req.params.id;
+        const booking = (yield dbhelper.query(`EXEC getBookingById @user_id = '${user_id}'`)).recordset;
         return res.status(200).json({
             booking: booking,
         });

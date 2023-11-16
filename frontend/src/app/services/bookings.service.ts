@@ -29,4 +29,19 @@ async createBooking(x: any,event_id:string) {
    
   }
 
+  async getUserBookings(user_id:string){
+    let token = localStorage.getItem('token') as string;
+    let res = await fetch(`http://localhost:5000/booking/user/${user_id}`, {
+      headers:{
+        "Content-type": "application/json",
+        "token": token
+      }
+    })
+
+    let data = await res.json()
+
+    return data
+    
+  }
+
 }
