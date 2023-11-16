@@ -26,9 +26,14 @@ export const registerUser = async(req:Request, res: Response) =>{
         }
 
         const emailTaken = (await dbhelper.query(`SELECT * FROM users WHERE email = '${email}'`)).recordset
+        const phoneTaken = (await dbhelper.query(`SELECT * FROM users WHERE phone_number = '${phone_number}'`)).recordset
 
         if(!isEmpty(emailTaken)){
             return res.json({error: "This email is already in use"})
+        }
+
+           if(!isEmpty(phoneTaken)){
+            return res.json({error: "This Phone Number is already in use"})
         }
         
         let user_id = v4()
@@ -52,80 +57,147 @@ export const registerUser = async(req:Request, res: Response) =>{
     }
 }
 
-export const loginUser = async(req:Request, res: Response) =>{
+
+export const loginUser = async(req: Request, res: Response) => {
     try {
-        const {email, password} = req.body
+        const { email, password } = req.body;
 
-        const pool = await mssql.connect(sqlConfig)
+        const pool = await mssql.connect(sqlConfig);
 
-        let user = await (await pool.request().input("email", email).input("password", password).execute('loginUser')).recordset
-        
-        if(user[0]?.email  == email){
-            const CorrectPwd = await bcrypt.compare(password, user[0]?.password)
+        let user = await (await pool.request().input("email", email).input("password", password).execute('loginUser')).recordset;
 
-            if(!CorrectPwd){
+        if (user[0]?.email == email) {
+            const CorrectPwd = await bcrypt.compare(password, user[0]?.password);
+
+            if (!CorrectPwd) {
                 return res.status(401).json({
                     error: "Incorrect password"
-                })
+                });
             }
 
-            const LoginCredentials = user.map(records =>{
-                const {phone_number,password, ...rest}=records
+            if (user[0]?.active === 0) {
+                return res.status(401).json({
+                    error: "Account deactivated, please contact admin"
+                });
+            }
 
-                return rest
-            })
+            const LoginCredentials = user.map(records => {
+                const { phone_number, password, ...rest } = records;
+                return rest;
+            });
 
-            console.log(LoginCredentials);
-
-           
-            const token = jwt.sign(LoginCredentials[0], process.env.SECRET as string, {
-                expiresIn: '3600s'
-            }) 
+            const token = jwt.sign(LoginCredentials[0], process.env.SECRET as string);
 
             return res.status(200).json({
                 message: "Logged in successfully", token
-            })
-            
-        }else{
+            });
+        } else {
             return res.json({
                 error: "Email not found"
-            })
+            });
         }
-
     } catch (error) {
         return res.json({
             error: error
-        })
+        });
     }
-}
+};
+
+
+export const deactivateUser = async (req: Request, res: Response) => {
+    try {
+        const userId = req.params.userId; // Assuming you pass the user ID in the request parameters
+
+        const pool = await mssql.connect(sqlConfig);
+
+        const result = await pool.request()
+            .input("userId", userId)
+            .execute('deactivateUser'); // Assuming you have a stored procedure to deactivate a user
+
+        if (result.rowsAffected[0] > 0) {
+            return res.status(200).json({
+                message: "User deactivated successfully"
+            });
+        } else {
+            return res.status(404).json({
+                error: "User not found"
+            });
+        }
+    } catch (error) {
+        return res.status(500).json({
+            error: error.message
+        });
+    }
+};
+
+
+export const activateUser = async (req: Request, res: Response) => {
+    try {
+        const userId = req.params.userId; // Assuming you pass the user ID in the request parameters
+
+        const pool = await mssql.connect(sqlConfig);
+
+        const result = await pool.request()
+            .input("userId", userId)
+            .execute('activateUser'); // Assuming you have a stored procedure to activate a user
+
+        if (result.rowsAffected[0] > 0) {
+            return res.status(200).json({
+                message: "User activated successfully"
+            });
+        } else {
+            return res.status(404).json({
+                error: "User not found"
+            });
+        }
+    } catch (error) {
+        return res.status(500).json({
+            error: error.message
+        });
+    }
+};
+
+
 
 
 export const manageProfile = async (req: Request, res: Response) => {
     try {
-        const { current_password,new_password,email } = req.body;
+        const { current_password, new_password, email } = req.body;
+        console.log(req.body);
+        
+        // Validate the request body using Joi or your preferred validation library
+        // I'm assuming you have a validation schema named manageProfileSchema
+        // const { error } = manageProfileSchema.validate(req.body);
+        // if (error) {
+        //     return res.status(400).json({ error: error.details[0].message });
+        // }
 
-        const { error } = manageProfileSchema.validate(req.body);
+        // Check if the email exists in the database
+        const emailExists = (await dbhelper.query(`SELECT * FROM users WHERE email = '${email}'`)).recordset;
 
-        if (error) {
-            return res.status(400).json({ error: error.details[0].message });
+        if (!emailExists || emailExists.length === 0) {
+            return res.status(404).json({ error: "Email not found" });
         }
 
-        const emailTaken = (await dbhelper.query(`SELECT * FROM users WHERE email = '${email}'`)).recordset;
+        // Check if the current password matches the stored hashed password
+        const storedPassword = emailExists[0].password;
+        const isPasswordValid = await bcrypt.compare(current_password, storedPassword);
 
-        if (!isEmpty(emailTaken)) {
-            return res.status(409).json({ error: "This email is already in use" });
+        if (!isPasswordValid) {
+            return res.status(401).json({ error: "Incorrect current password" });
         }
 
-        // const user_id = uuidv4();
+        // Hash the new password
+        const hashedNewPassword = await bcrypt.hash(new_password, 10);
 
-        const hashedPwd = await bcrypt.hash(new_password, 10);
-
+        // Update the user's password in the database
         await dbhelper.execute('manageProfile', {
-            new_password: hashedPwd
+            new_password: hashedNewPassword,
+            user_id: emailExists[0].user_id,
         });
 
         return res.status(200).json({
-            message: 'Profile managed successfully'
+            message: 'Password reset successfully'
         });
 
     } catch (error) {
@@ -145,7 +217,8 @@ async function sendPasswordChangeAttemptEmail(email: string) {
 export const checkUserDetails = async (req:ExtendedUser, res:Response)=>{
     
     if(req.info){
-
+        console.log(req.info);
+        
         return res.json({
             info: req.info 
         })

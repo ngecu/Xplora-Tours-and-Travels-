@@ -10,4 +10,6 @@ import { Review } from '../interfaces/review';
 export class UserDashboardComponent {
   bookings: Booking[] = [];
   reviews: Review[] = [];
+
+  showSadImage: boolean = true;
 }

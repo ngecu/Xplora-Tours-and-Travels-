@@ -5,6 +5,6 @@ CREATE TABLE users (
     phone_number VARCHAR(15) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
     role INT NOT NULL DEFAULT 0,
-    welcomed INT Default 0
+    welcomed INT Default 0,
     active INT Default 1
 );

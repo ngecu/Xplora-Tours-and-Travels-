@@ -13,6 +13,7 @@ export class RegisterComponent {
 
   registrationForm!:FormGroup
   error:boolean = false;
+  success:boolean = false;
   errorMessage:string = ''
   successMessage:string = ''
 
@@ -58,10 +59,13 @@ export class RegisterComponent {
      }
 
      else if(response.message){
+      this.success = true
       this.successMessage = "user Registered successfully"
 
            setTimeout( async() => {     
-
+            this.success = false
+            this.successMessage = ""
+      
           this.router.navigate(['/login'])
         }, 2000);
 

@@ -10,4 +10,5 @@ user_router.get('/check_user_details', verifyToken_1.verifyToken, usersControlle
 user_router.get("/allUsers", verifyToken_1.verifyToken, usersControllers_1.getAllUsers);
 user_router.get('/:id', verifyToken_1.verifyToken, usersControllers_1.getOneUser);
 user_router.delete('/:user_id', verifyToken_1.verifyToken, usersControllers_1.deleteUser);
+user_router.post('/resetPassword', verifyToken_1.verifyToken, usersControllers_1.manageProfile);
 exports.default = user_router;

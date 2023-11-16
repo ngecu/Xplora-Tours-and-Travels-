@@ -52,13 +52,13 @@ let user_details = this.loginForm.value
       this.loggedInState = true
       this.successMessage = response.message
       this.loggedIn = true
-      let {role,name} = await this.userService.checkDetails()
+      let {role,name,email,phone_number,user_id} = await this.userService.checkDetails()
       localStorage.setItem('loggedIn', `${this.loggedIn}`)  
       localStorage.setItem('name', `${name}`)  
-
-
-    
-      
+      localStorage.setItem('email', `${email}`)  
+      localStorage.setItem('phone_number', `${phone_number}`)  
+      localStorage.setItem('user_id', `${user_id}`)  
+  
       
       console.log(role);
       

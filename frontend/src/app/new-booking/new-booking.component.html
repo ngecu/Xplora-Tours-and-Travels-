@@ -4,22 +4,30 @@
       <div class="bg-gray-100 p-5 flex rounded-2xl shadow-lg max-w-3xl">
         <div class="md:w-1/2 px-5">
          
-          <form [formGroup]="bookingForm" (ngSubmit)="bookForm()">
-            <!-- <div *ngIf="error" class="flex justify-center p-4 bg-red-200 text-red-500 rounded mb-2">{{errorMessage}}</div> -->
+          <form [formGroup]="bookingForm" (ngSubmit)="bookForm()" class="max-w-md mx-auto p-4 bg-white rounded shadow-md">
+
+            <!-- Event Selection -->
+            <div class="mb-4">
+              <label for="event_id" class="block text-gray-700 text-sm font-bold mb-2">Select Tour:</label>
+              <select formControlName="event_id" class="w-full p-2 border border-gray-300 rounded" required>
+                <option value="" disabled>Select a tour</option>
+                <option *ngFor="let tour of events" [value]="tour.event_id">{{ tour.destination }}</option>
+              </select>
+              
+            </div>
           
-            <label for="event_id" class="block mb-2">Select Tour:</label>
-            <select formControlName="event_id" class="w-full px-4 py-2 border rounded mb-4">
-              <option value="event1">Event 1</option>
-              <option value="event2">Event 2</option>
-              <!-- Add more options as needed -->
-            </select>
-            <!-- <div *ngIf="registrationForm.get('event_id')?.invalid && registrationForm.get('event_id')?.touched" class="text-red-500">Event selection is required</div> -->
+            <!-- User ID (disabled)
+            <div class="mb-4">
+              <label for="user_id" class="block text-gray-700 text-sm font-bold mb-2">User </label>
+              <input type="text" formControlName="user_id" class="w-full p-2 border border-gray-300 rounded" [disabled]="true">
+            </div>
+           -->
+           
           
-            <label for="user_id" class="block mb-2">User </label>
-            <input type="text" formControlName="user_id" class="w-full px-4 py-2 border rounded mb-4" [disabled]="true">
-            
-            <button class="w-full block bg-blue-500 hover:bg-blue-400 focus:bg-blue-400 text-white font-semibold rounded-lg px-4 py-3 mt-6" type="submit">Book Now</button>
+            <!-- Submit Button -->
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Book Now</button>
           </form>
+          
           
   
   

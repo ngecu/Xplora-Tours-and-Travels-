@@ -1,5 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { User } from '../interfaces/user';
+import { AuthService } from '../services/auth.service';
+import { UsersService } from '../services/users.service';
 
 @Component({
   selector: 'app-profile',
@@ -7,15 +11,101 @@ import { User } from '../interfaces/user';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent {
-  currentUser! : User 
 
-  constructor (){
-    this.currentUser = {
-      full_name:"Robin",
-      email:"devngecu@gmail.com",
-      password:"I@mrich254",
-      confirm_password:"I@mrich254",
-      phone_number:"070758092"
-    }
+  profileForm!:FormGroup;
+
+  currentUser!: User;
+  newPassword: string = '';
+  confirmPassword: string = '';
+
+  fullName: string = '';
+  email: string = '';
+  phoneNumber: string = '';
+
+  error:boolean = false;
+  success:boolean = false;
+  errorMessage:string = ''
+  successMessage:string = ''
+
+
+  constructor(
+    private fb:FormBuilder,
+    private authService:AuthService,
+    private router: Router
+  ){
+
+    this.fullName = localStorage.getItem('name') as string;
+    this.email = localStorage.getItem('email')  as string;
+    this.phoneNumber = localStorage.getItem('phone_number') as string;
+
+
+    this.profileForm = this.fb.group({
+      password: ['',[Validators.required]],
+      confirm_password: ['',[Validators.required]],
+    })
   }
+
+
+  ngOnInit() {
+    // Retrieve individual user details from local storage
+
+    // Construct the currentUser object
+    this.currentUser = {
+      full_name: this.fullName || "Default Full Name",
+      email: this.email || "default@example.com",
+      phone_number: this.phoneNumber || "123456789"
+    };
+  }
+
+async updateProfile() {
+    // Your logic to update the user profile, including password reset
+    if (this.newPassword !== this.confirmPassword) {
+      // Handle password mismatch
+      alert("Password and Confirm Password do not match");
+      return;
+    }
+
+    // Your logic to update the user profile
+    // For example, you might want to send an API request to update the user details
+
+    // Reset the password fields after updating
+    this.newPassword = '';
+    this.confirmPassword = '';
+
+    const x = this.profileForm.value
+
+    console.log(x)
+
+    let response = await this.authService.resetPassword(this.email,this.newPassword)
+
+    if(response.error){
+      this.error = true
+      this.errorMessage = response.error
+
+      setTimeout(() => {
+        this.errorMessage = ''
+      this.error = false
+
+      }, 3000);
+
+
+     }
+
+          else if(response.message){
+      this.success = true
+      this.successMessage = "user Registered successfully"
+
+           setTimeout( async() => {     
+            this.success = false
+            this.successMessage = ""
+      
+          // this.router.navigate(['/login'])
+        }, 2000);
+
+     }
+
+
+    alert("Profile updated successfully!");
+  }
+
 }

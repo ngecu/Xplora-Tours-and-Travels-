@@ -24,7 +24,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
          <!-- Filled dynamically with JavaScript or server data -->
        
-         <div class="bg-white rounded-md overflow-hidden shadow-md">
+         <div *ngFor="let tour of events"  class="bg-white rounded-md overflow-hidden shadow-md">
           <img src="https://tembeatujengekenya.com/wp-content/uploads/2014/06/staycation-773x520.jpeg" alt="Tour Image" class="w-full h-48 object-cover mb-4">
           <div class="p-4">
             <h3 class="text-xl font-semibold mb-2">Safari Adventure</h3>
@@ -39,69 +39,6 @@
            
           </div>
         </div>
-
-
-        <div class="bg-white rounded-md overflow-hidden shadow-md">
-          <img src="https://tembeatujengekenya.com/wp-content/uploads/2014/06/staycation-773x520.jpeg" alt="Tour Image" class="w-full h-48 object-cover mb-4">
-          <div class="p-4">
-            <h3 class="text-xl font-semibold mb-2">Safari Adventure</h3>
-            <p class="text-gray-600 mb-4">Experience the beauty of Kenyan wildlife on this exciting safari adventure.</p>
-            <p class="text-sm text-gray-500">
-              Kenya 7 Days $1500
-            </p>
-          </div>
-        
-          <div class="bg-gray-100 py-2 px-4 flex justify-between items-center">
-            <a routerLink="tour/1" class="view-btn text-blue-500 hover:underline">View Details</a>
-            <div class="flex space-x-2">
-              <!-- <button class="bg-yellow-500 text-white px-3 py-1 rounded">View More</button> -->
-              <!-- <button class="bg-red-500 text-white px-3 py-1 rounded">Delete</button> -->
-            </div>
-          </div>
-        </div>
-
-
-
-        <div class="bg-white rounded-md overflow-hidden shadow-md">
-          <img src="https://tembeatujengekenya.com/wp-content/uploads/2014/06/staycation-773x520.jpeg" alt="Tour Image" class="w-full h-48 object-cover mb-4">
-          <div class="p-4">
-            <h3 class="text-xl font-semibold mb-2">Safari Adventure</h3>
-            <p class="text-gray-600 mb-4">Experience the beauty of Kenyan wildlife on this exciting safari adventure.</p>
-            <p class="text-sm text-gray-500">
-              Kenya 7 Days $1500
-            </p>
-          </div>
-        
-          <div class="bg-gray-100 py-2 px-4 flex justify-between items-center">
-            <a routerLink="tour/1" class="view-btn text-blue-500 hover:underline">View Details</a>
-            <div class="flex space-x-2">
-              <!-- <button class="bg-yellow-500 text-white px-3 py-1 rounded">View More</button> -->
-              <!-- <button class="bg-red-500 text-white px-3 py-1 rounded">Delete</button> -->
-            </div>
-          </div>
-        </div>
-
-
-
-        <div class="bg-white rounded-md overflow-hidden shadow-md">
-          <img src="https://tembeatujengekenya.com/wp-content/uploads/2014/06/staycation-773x520.jpeg" alt="Tour Image" class="w-full h-48 object-cover mb-4">
-          <div class="p-4">
-            <h3 class="text-xl font-semibold mb-2">Safari Adventure</h3>
-            <p class="text-gray-600 mb-4">Experience the beauty of Kenyan wildlife on this exciting safari adventure.</p>
-            <p class="text-sm text-gray-500">
-              Kenya 7 Days $1500
-            </p>
-          </div>
-        
-          <div class="bg-gray-100 py-2 px-4 flex justify-between items-center">
-            <a routerLink="tour/1" class="view-btn text-blue-500 hover:underline">View Details</a>
-            <div class="flex space-x-2">
-              <!-- <button class="bg-yellow-500 text-white px-3 py-1 rounded">View More</button> -->
-              <!-- <button class="bg-red-500 text-white px-3 py-1 rounded">Delete</button> -->
-            </div>
-          </div>
-        </div>
-
         
 
        </div>

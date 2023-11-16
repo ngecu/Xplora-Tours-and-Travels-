@@ -39,8 +39,11 @@ export class UsersService {
 
     let role = data.info.role
     let name = data.info.full_name
+    let email = data.info.email
+    let phone_number = data.info.phone_number
+    let user_id = data.info.user_id
 
-    return {role,name}
+    return {role,name,email,phone_number,user_id}
   }
 
   async getOneUser(user_id: string){

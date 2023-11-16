@@ -7,7 +7,7 @@ const dbhelper = new Connection;
 
 export const createBooking = async (req: Request, res: Response) => {
   try {
-    console.log(req.body);
+    console.log("booking ",req.body);
 
     let { event_id, user_id } = req.body;
 
@@ -38,6 +38,23 @@ export const getAllBookings = async (req: ExtendedUser, res: Response) => {
 
     return res.status(200).json({
       bookings: bookings,
+    });
+
+  } catch (error) {
+    return res.json({
+      error: error,
+    });
+  }
+};
+
+export const getUserBookings = async (req: Request, res: Response) => {
+  try {
+    let id = req.params.id;
+
+    const booking = (await dbhelper.query(`EXEC getBookingById @booking_id = '${id}'`)).recordset;
+
+    return res.status(200).json({
+      booking: booking,
     });
 
   } catch (error) {
@@ -86,3 +103,4 @@ export const deleteBooking = async (req: ExtendedUser, res: Response) => {
     });
   }
 };
+

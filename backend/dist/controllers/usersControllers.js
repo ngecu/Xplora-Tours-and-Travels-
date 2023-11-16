@@ -23,7 +23,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.getOneUser = exports.getAllUsers = exports.checkUserDetails = exports.manageProfile = exports.loginUser = exports.registerUser = void 0;
+exports.deleteUser = exports.getOneUser = exports.getAllUsers = exports.checkUserDetails = exports.manageProfile = exports.activateUser = exports.deactivateUser = exports.loginUser = exports.registerUser = void 0;
 const mssql_1 = __importDefault(require("mssql"));
 const uuid_1 = require("uuid");
 const bcrypt_1 = __importDefault(require("bcrypt"));
@@ -43,8 +43,12 @@ const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             return res.status(404).json({ error: error.details[0].message });
         }
         const emailTaken = (yield dbhelper.query(`SELECT * FROM users WHERE email = '${email}'`)).recordset;
+        const phoneTaken = (yield dbhelper.query(`SELECT * FROM users WHERE phone_number = '${phone_number}'`)).recordset;
         if (!(0, lodash_1.isEmpty)(emailTaken)) {
             return res.json({ error: "This email is already in use" });
+        }
+        if (!(0, lodash_1.isEmpty)(phoneTaken)) {
+            return res.json({ error: "This Phone Number is already in use" });
         }
         let user_id = (0, uuid_1.v4)();
         const hashedPwd = yield bcrypt_1.default.hash(password, 10);
@@ -64,7 +68,7 @@ const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 });
 exports.registerUser = registerUser;
 const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b;
+    var _a, _b, _c;
     try {
         const { email, password } = req.body;
         const pool = yield mssql_1.default.connect(sqlConfig_1.sqlConfig);
@@ -76,14 +80,16 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                     error: "Incorrect password"
                 });
             }
+            if (((_c = user[0]) === null || _c === void 0 ? void 0 : _c.active) === 0) {
+                return res.status(401).json({
+                    error: "Account deactivated, please contact admin"
+                });
+            }
             const LoginCredentials = user.map(records => {
                 const { phone_number, password } = records, rest = __rest(records, ["phone_number", "password"]);
                 return rest;
             });
-            console.log(LoginCredentials);
-            const token = jsonwebtoken_1.default.sign(LoginCredentials[0], process.env.SECRET, {
-                expiresIn: '3600s'
-            });
+            const token = jsonwebtoken_1.default.sign(LoginCredentials[0], process.env.SECRET);
             return res.status(200).json({
                 message: "Logged in successfully", token
             });
@@ -101,24 +107,86 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.loginUser = loginUser;
+const deactivateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const userId = req.params.userId; // Assuming you pass the user ID in the request parameters
+        const pool = yield mssql_1.default.connect(sqlConfig_1.sqlConfig);
+        const result = yield pool.request()
+            .input("userId", userId)
+            .execute('deactivateUser'); // Assuming you have a stored procedure to deactivate a user
+        if (result.rowsAffected[0] > 0) {
+            return res.status(200).json({
+                message: "User deactivated successfully"
+            });
+        }
+        else {
+            return res.status(404).json({
+                error: "User not found"
+            });
+        }
+    }
+    catch (error) {
+        return res.status(500).json({
+            error: error.message
+        });
+    }
+});
+exports.deactivateUser = deactivateUser;
+const activateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const userId = req.params.userId; // Assuming you pass the user ID in the request parameters
+        const pool = yield mssql_1.default.connect(sqlConfig_1.sqlConfig);
+        const result = yield pool.request()
+            .input("userId", userId)
+            .execute('activateUser'); // Assuming you have a stored procedure to activate a user
+        if (result.rowsAffected[0] > 0) {
+            return res.status(200).json({
+                message: "User activated successfully"
+            });
+        }
+        else {
+            return res.status(404).json({
+                error: "User not found"
+            });
+        }
+    }
+    catch (error) {
+        return res.status(500).json({
+            error: error.message
+        });
+    }
+});
+exports.activateUser = activateUser;
 const manageProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { current_password, new_password, email } = req.body;
-        const { error } = validators_1.manageProfileSchema.validate(req.body);
-        if (error) {
-            return res.status(400).json({ error: error.details[0].message });
+        console.log(req.body);
+        // Validate the request body using Joi or your preferred validation library
+        // I'm assuming you have a validation schema named manageProfileSchema
+        // const { error } = manageProfileSchema.validate(req.body);
+        // if (error) {
+        //     return res.status(400).json({ error: error.details[0].message });
+        // }
+        // Check if the email exists in the database
+        const emailExists = (yield dbhelper.query(`SELECT * FROM users WHERE email = '${email}'`)).recordset;
+        if (!emailExists || emailExists.length === 0) {
+            return res.status(404).json({ error: "Email not found" });
         }
-        const emailTaken = (yield dbhelper.query(`SELECT * FROM users WHERE email = '${email}'`)).recordset;
-        if (!(0, lodash_1.isEmpty)(emailTaken)) {
-            return res.status(409).json({ error: "This email is already in use" });
+        // Check if the current password matches the stored hashed password
+        const storedPassword = emailExists[0].password;
+        const isPasswordValid = yield bcrypt_1.default.compare(current_password, storedPassword);
+        if (!isPasswordValid) {
+            return res.status(401).json({ error: "Incorrect current password" });
         }
-        // const user_id = uuidv4();
-        const hashedPwd = yield bcrypt_1.default.hash(new_password, 10);
+        // Hash the new password
+        const hashedNewPassword = yield bcrypt_1.default.hash(new_password, 10);
+        // Update the user's password in the database
         yield dbhelper.execute('manageProfile', {
-            new_password: hashedPwd
+            new_password: hashedNewPassword,
+            user_id: emailExists[0].user_id,
         });
         return res.status(200).json({
-            message: 'Profile managed successfully'
+            message: 'Password reset successfully'
         });
     }
     catch (error) {
@@ -135,6 +203,7 @@ function sendPasswordChangeAttemptEmail(email) {
 }
 const checkUserDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (req.info) {
+        console.log(req.info);
         return res.json({
             info: req.info
         });

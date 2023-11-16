@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteEvent = exports.getAlEvents = exports.updateEvent = exports.getIndividualEvent = exports.createEvent = void 0;
+exports.activateEvent = exports.deactivateEvent = exports.getOneEvent = exports.getAllEvents = exports.deleteEvent = exports.getAlEvents = exports.updateEvent = exports.getIndividualEvent = exports.createEvent = void 0;
 const validators_1 = require("../validators/validators");
 const mssql_1 = __importDefault(require("mssql"));
 const uuid_1 = require("uuid");
@@ -132,3 +132,82 @@ const deleteEvent = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.deleteEvent = deleteEvent;
+const getAllEvents = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const events = (yield dbhelper.query('EXEC fetchAllEvents')).recordset;
+        return res.status(200).json({
+            events: events,
+        });
+    }
+    catch (error) {
+        return res.json({
+            error: error,
+        });
+    }
+});
+exports.getAllEvents = getAllEvents;
+const getOneEvent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        let id = req.params.id;
+        const event = (yield dbhelper.query(`EXEC getEvntById @event_id = '${id}'`)).recordset;
+        return res.status(200).json({
+            event: event,
+        });
+    }
+    catch (error) {
+        return res.json({
+            error: error,
+        });
+    }
+});
+exports.getOneEvent = getOneEvent;
+const deactivateEvent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const eventId = req.params.eventId; // Assuming you pass the user ID in the request parameters
+        const pool = yield mssql_1.default.connect(sqlConfig_1.sqlConfig);
+        const result = yield pool.request()
+            .input("eventId", eventId)
+            .execute('deactivateevent'); // Assuming you have a stored procedure to deactivate a user
+        if (result.rowsAffected[0] > 0) {
+            return res.status(200).json({
+                message: "Event deactivated successfully"
+            });
+        }
+        else {
+            return res.status(404).json({
+                error: "Event not found"
+            });
+        }
+    }
+    catch (error) {
+        return res.status(500).json({
+            error: error.message
+        });
+    }
+});
+exports.deactivateEvent = deactivateEvent;
+const activateEvent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const eventId = req.params.eventId; // Assuming you pass the user ID in the request parameters
+        const pool = yield mssql_1.default.connect(sqlConfig_1.sqlConfig);
+        const result = yield pool.request()
+            .input("eventId", eventId)
+            .execute('activateEvent'); // Assuming you have a stored procedure to activate a user
+        if (result.rowsAffected[0] > 0) {
+            return res.status(200).json({
+                message: "Event activated successfully"
+            });
+        }
+        else {
+            return res.status(404).json({
+                error: "Event not found"
+            });
+        }
+    }
+    catch (error) {
+        return res.status(500).json({
+            error: error.message
+        });
+    }
+});
+exports.activateEvent = activateEvent;

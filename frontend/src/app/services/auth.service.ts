@@ -45,5 +45,36 @@ export class AuthService {
 
     return data
   }
+
+  async resetPassword(email: string, newPassword: string): Promise<any> {
+    const resetData = {
+      email: email,
+      newPassword: newPassword,
+    };
+
+    try {
+      let token = localStorage.getItem('token') as string
+
+      const response = await fetch("http://localhost:5000/user/resetPassword", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'token':token
+        },
+        body: JSON.stringify(resetData),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error during password reset:', error);
+      throw error;
+    }
+  }
+
 }
 

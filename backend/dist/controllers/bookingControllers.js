@@ -12,13 +12,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteBooking = exports.getOneBooking = exports.getAllBookings = exports.createBooking = void 0;
+exports.deleteBooking = exports.getOneBooking = exports.getUserBookings = exports.getAllBookings = exports.createBooking = void 0;
 const uuid_1 = require("uuid");
 const dbhelpers_1 = __importDefault(require("../dbhelpers/dbhelpers"));
 const dbhelper = new dbhelpers_1.default;
 const createBooking = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        console.log(req.body);
+        console.log("booking ", req.body);
         let { event_id, user_id } = req.body;
         let booking_id = (0, uuid_1.v4)();
         let result = yield dbhelper.execute('createBooking', {
@@ -52,6 +52,21 @@ const getAllBookings = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.getAllBookings = getAllBookings;
+const getUserBookings = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        let id = req.params.id;
+        const booking = (yield dbhelper.query(`EXEC getBookingById @booking_id = '${id}'`)).recordset;
+        return res.status(200).json({
+            booking: booking,
+        });
+    }
+    catch (error) {
+        return res.json({
+            error: error,
+        });
+    }
+});
+exports.getUserBookings = getUserBookings;
 const getOneBooking = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let id = req.params.id;
