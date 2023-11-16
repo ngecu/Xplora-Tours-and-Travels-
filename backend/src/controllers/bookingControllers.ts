@@ -9,9 +9,11 @@ export const createBooking = async (req: Request, res: Response) => {
   try {
     console.log("booking ",req.body);
 
-    let { event_id, user_id } = req.body;
+    let  event_id = req.body.event_id.event_id;
+    let  user_id = req.body.user_id;
 
     let booking_id = v4();
+    
 
     let result = await dbhelper.execute('createBooking', {
       booking_id,
@@ -26,6 +28,8 @@ export const createBooking = async (req: Request, res: Response) => {
     });
 
   } catch (error) {
+    console.log(error);
+
     return res.json({
       error: error,
     });

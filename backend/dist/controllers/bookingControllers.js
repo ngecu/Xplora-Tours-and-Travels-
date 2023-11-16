@@ -19,7 +19,8 @@ const dbhelper = new dbhelpers_1.default;
 const createBooking = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         console.log("booking ", req.body);
-        let { event_id, user_id } = req.body;
+        let event_id = req.body.event_id.event_id;
+        let user_id = req.body.user_id;
         let booking_id = (0, uuid_1.v4)();
         let result = yield dbhelper.execute('createBooking', {
             booking_id,
@@ -32,6 +33,7 @@ const createBooking = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         });
     }
     catch (error) {
+        console.log(error);
         return res.json({
             error: error,
         });

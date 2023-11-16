@@ -15,7 +15,7 @@ export class NewBookingComponent {
   successMessage: string = '';
   errorMessage: string = '';
   name = localStorage.getItem('name');
-
+  user_id = localStorage.getItem('user_id')
   constructor(private eventsService: EventsService, private formBuilder: FormBuilder, private bookingService: BookingsService) {
     this.bookingForm = this.formBuilder.group({
       event_id: ['', Validators.required],
@@ -26,9 +26,10 @@ export class NewBookingComponent {
 
   }
 
+
   async bookForm() {
     if (this.bookingForm.valid) {
-      const response = await this.bookingService.createBooking(this.bookingForm.value);
+      const response = await this.bookingService.createBooking(this.user_id, this.bookingForm.value);
 
       if (response.error) {
         this.errorMessage = response.error;

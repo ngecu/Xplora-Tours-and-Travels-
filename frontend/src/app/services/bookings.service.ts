@@ -7,10 +7,13 @@ export class BookingsService {
 
   constructor() { }
 
-async createBooking(bookingData: any) {
-    const url = `http://localhost:5000/user/register`;
+async createBooking(x: any,event_id:string) {
+    const url = `http://localhost:5000/booking/create`;
 
-  
+  const bookingData = {
+    user_id:x,
+    event_id
+  }
     let response = await fetch(url, {
         method: 'POST',
         headers: {
