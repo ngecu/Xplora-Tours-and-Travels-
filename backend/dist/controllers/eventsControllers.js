@@ -229,21 +229,25 @@ const activateEvent = (req, res) => __awaiter(void 0, void 0, void 0, function* 
 exports.activateEvent = activateEvent;
 const filterEventsByDestination = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { destination } = req.params;
-        if (!destination) {
-            return res.status(400).json({
-                error: 'Destination parameter is missing.',
-            });
+        const searchTerm = req.params.searchTerm;
+        const pool = yield mssql_1.default.connect(sqlConfig_1.sqlConfig);
+        // Assuming you have a stored procedure named 'filterEventsBySearchTerm'
+        const result = yield pool.request()
+            .input('searchTerm', mssql_1.default.NVarChar(255), `%${searchTerm}%`)
+            .execute('filterEventsBySearchTerm');
+        const selectedEvents = result.recordset;
+        // Check if any events were found
+        if (selectedEvents.length === 0) {
+            return res.status(404).json({ error: 'No events found' });
         }
-        const query = `EXEC filterEventsByDestination @destination = '${destination}'`;
-        const filteredEvents = (yield dbhelper.query(query)).recordset;
-        return res.status(200).json({
-            filteredEvents: filteredEvents,
+        res.status(200).json({
+            events: selectedEvents,
         });
     }
     catch (error) {
+        console.error('Error fetching filtered events:', error);
         return res.status(500).json({
-            error: 'Internal Server Error',
+            error: 'Internal server error',
         });
     }
 });

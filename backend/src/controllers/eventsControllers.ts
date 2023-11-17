@@ -258,24 +258,32 @@ export const activateEvent = async (req: Request, res: Response) => {
 
 export const filterEventsByDestination = async (req: ExtendedUser, res: Response) => {
   try {
-    const { destination } = req.params;
+    const searchTerm = req.params.searchTerm;
 
-    if (!destination) {
-      return res.status(400).json({
-        error: 'Destination parameter is missing.',
-      });
+    const pool = await mssql.connect(sqlConfig);
+
+    // Assuming you have a stored procedure named 'filterEventsBySearchTerm'
+    const result = await pool.request()
+      .input('searchTerm', mssql.NVarChar(255), `%${searchTerm}%`)
+      .execute('filterEventsBySearchTerm');
+
+    const selectedEvents = result.recordset;
+
+    // Check if any events were found
+    if (selectedEvents.length === 0) {
+      return res.status(404).json({ error: 'No events found' });
     }
 
-    const query = `EXEC filterEventsByDestination @destination = '${destination}'`;
-    const filteredEvents = (await dbhelper.query(query)).recordset;
-
-    return res.status(200).json({
-      filteredEvents: filteredEvents,
+    res.status(200).json({
+      events: selectedEvents,
     });
 
   } catch (error) {
+    console.error('Error fetching filtered events:', error);
     return res.status(500).json({
-      error: 'Internal Server Error',
+      error: 'Internal server error',
     });
   }
 };
+
+

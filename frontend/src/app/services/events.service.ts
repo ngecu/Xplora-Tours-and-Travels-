@@ -77,4 +77,23 @@ export class EventsService {
 
     return data;
   }
+
+    async getEventsBySearchTerm(searchTerm: string){
+
+    let response = await fetch(`http://localhost:5000/events/filter/${searchTerm}`,{
+      headers:{
+        "Content-Type":"application/json",
+      },
+      method:"GET"
+    });
+
+    const data = await response.json();
+
+    console.log(data);
+
+    return data;
+  }
+
+
+  
 }

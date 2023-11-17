@@ -1,18 +1,41 @@
 <app-navbar></app-navbar>
 
 <body class="max-h-screen">
-    <section class="border-red-500 bg-gray-200 min-h-screen flex items-center justify-center">
-      <div class="bg-gray-100 p-5 flex rounded-2xl shadow-lg max-w-3xl">
-  
-<div class="container mx-auto">
-    <h2 class="text-2xl font-semibold mb-4">Search Results</h2>
-    <p *ngIf="searchTerm">Showing results for: {{ searchTerm }}</p>
-    <!-- Add your search results rendering logic here -->
-  </div>
+  <section class="border-red-500 bg-gray-200 min-h-screen flex items-center justify-center">
+    <div class="bg-gray-100 p-5 flex rounded-2xl shadow-lg max-w-3xl">
+      <div class="container mx-auto">
+        <h2 class="text-2xl font-semibold mb-4">Search Results</h2>
+        <p *ngIf="searchTerm">Showing results for: {{ searchTerm }}</p>
+        
+        <!-- Display search results -->
+        <div *ngIf="events && events.length > 0; else noResults">
+          <div *ngFor="let event of events" class="bg-white rounded-md overflow-hidden shadow-md mb-4">
+            <!-- Display event details -->
+            <!-- Customize the following as per your event object structure -->
+            <img [src]="event.image" alt="Tour Image" class="w-full h-48 object-cover mb-4">
+            <div class="p-4">
+              <h3 class="text-xl font-semibold mb-2">{{ event.destination }}</h3>
+              <p class="text-gray-600 mb-4">{{ event.description }}</p>
+              <p class="text-sm text-gray-500">
+                {{ event.duration }} Day(s) {{ event.price }} Ksh
+              </p>
+            </div>
+            <div class="bg-gray-100 py-2 px-4 flex justify-between items-center">
+              <a [routerLink]="'/tour/' + event.event_id" class="view-btn text-blue-500 hover:underline">View Details</a>
+            </div>
+          </div>
+        </div>
 
-  </div>
+        <!-- Show alert if no results found -->
+        <ng-template #noResults>
+          <div class="alert alert-warning">
+            No tours found for the search term "{{ searchTerm }}".
+          </div>
+        </ng-template>
+        
+      </div>
+    </div>
   </section>
 
-  </body>
-  
   <app-footer></app-footer>
+</body>

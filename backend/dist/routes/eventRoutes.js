@@ -8,6 +8,6 @@ event_router.get("/allEvents", verifyToken_1.verifyToken, eventsControllers_1.ge
 event_router.get('/:eventId', verifyToken_1.verifyToken, eventsControllers_1.getIndividualEvent);
 event_router.delete('/:event_id', verifyToken_1.verifyToken, eventsControllers_1.deleteEvent);
 event_router.put('/:event_id', verifyToken_1.verifyToken, eventsControllers_1.updateEvent);
-event_router.get('/:destination', eventsControllers_1.filterEventsByDestination);
+event_router.get('/filter/:searchTerm', eventsControllers_1.filterEventsByDestination);
 event_router.post('/', verifyToken_1.verifyToken, eventsControllers_1.createEvent);
 exports.default = event_router;
