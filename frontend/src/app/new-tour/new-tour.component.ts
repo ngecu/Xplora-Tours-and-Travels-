@@ -3,24 +3,29 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { EventsService } from '../services/events.service';
-import { CategoriesService } from '../services/categories.service'; // Import the service for categories
+import { CategoriesService } from '../services/categories.service';
 
 @Component({
   selector: 'app-new-tour',
   templateUrl: './new-tour.component.html',
   styleUrls: ['./new-tour.component.css'],
 })
-export class NewTourComponent  {
+export class NewTourComponent implements OnInit {
   eventForm!: FormGroup;
-  categories: any[] = []; // Array to store categories
+  categories: any[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
     private eventsService: EventsService,
-    private categoriesService: CategoriesService, // Inject the service for categories
+    private categoriesService: CategoriesService,
     private router: Router
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     this.eventForm = this.formBuilder.group({
+      event_name: ['', Validators.required],
+      image: ['', Validators.required],
+      description: ['', Validators.required],
       destination: ['', Validators.required],
       duration: [0, [Validators.required, Validators.min(1)]],
       start_date: ['', Validators.required],
@@ -28,33 +33,27 @@ export class NewTourComponent  {
       category_id: ['', Validators.required],
     });
 
-    this.getCategories()
+    this.getCategories();
   }
 
-
-  async  getCategories(){
-    let response = await this.categoriesService.geCategroies()
-    if(response){
-      console.log(response);
-      
-      this.categories = response.categories
+  async getCategories() {
+    try {
+      const response = await this.categoriesService.geCategroies();
+      if (response && response.categories) {
+        this.categories = response.categories;
+      }
+    } catch (error) {
+      console.error('Error fetching categories', error);
     }
-    
-   }
+  }
 
-   
-  
-
-   async onSubmit() {
+  async onSubmit() {
     if (this.eventForm.valid) {
       try {
         const response = await this.eventsService.createEvent(this.eventForm.value);
-        console.log(response);
-        
         if (response.message) {
           console.log('Event created successfully', response);
-          // Redirect to the events list page or perform any other action
-          this.router.navigate(['admin/tours']);
+          this.router.navigate(['']);
         } else if (response.error) {
           alert(response.error);
         }

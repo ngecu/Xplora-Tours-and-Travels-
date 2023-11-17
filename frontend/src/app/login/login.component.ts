@@ -58,7 +58,7 @@ let user_details = this.loginForm.value
       localStorage.setItem('email', `${email}`)  
       localStorage.setItem('phone_number', `${phone_number}`)  
       localStorage.setItem('user_id', `${user_id}`)  
-  
+      localStorage.setItem('role', `${role}`)  
       
       console.log(role);
       

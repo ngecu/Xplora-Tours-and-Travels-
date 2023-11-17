@@ -25,6 +25,7 @@ import { ReviewsComponent } from './reviews/reviews.component';
 import { LandingComponent } from './landing/landing.component';
 import { FooterComponent } from './footer/footer.component';
 import { NewBookingComponent } from './new-booking/new-booking.component';
+import { SearchpageComponent } from './searchpage/searchpage.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { NewBookingComponent } from './new-booking/new-booking.component';
     ReviewsComponent,
     FooterComponent,
     SingleuserComponent,
-    NewBookingComponent
+    NewBookingComponent,
+    SearchpageComponent
   ],
   imports: [
     AppRoutingModule,

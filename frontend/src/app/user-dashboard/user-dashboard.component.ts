@@ -16,7 +16,7 @@ export class UserDashboardComponent {
   constructor(private bookingsService: BookingsService, private router: Router){
     // this.fetchEmployees()
 
-    this.getMyBookings()
+    
   }
   
 
@@ -24,14 +24,17 @@ export class UserDashboardComponent {
   user_id = localStorage.getItem('user_id') as string
   ngOnInit() {
     initTE({ Tab, Input });
+    initTE({ Modal, Ripple });
+    this.getMyBookings()
   }
 
     async getMyBookings(){
     let response = await this.bookingsService.getUserBookings(this.user_id)
-  console.log(response);
+  console.log("booking ",response.bookings);
 
   this.bookings = response.bookings
   
   }
+
 
 }

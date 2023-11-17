@@ -285,3 +285,40 @@ export const deleteUser = async (req: ExtendedUser, res: Response) => {
     }
   };
   
+
+
+  export const updateUserActiveStatus = async (req: ExtendedUser, res: Response) => {
+    try {
+        const userId = req.params.user_id;
+        const { active } = req.body;
+
+        console.log(req);
+        
+    
+        const updateQuery = `
+          UPDATE users
+          SET active = @active
+          WHERE user_id = @userId;
+          SELECT * FROM users WHERE user_id = @userId;
+        `;
+    
+        const pool = await mssql.connect(sqlConfig);
+    
+        const result = await pool.request()
+          .input('active', mssql.Int, active)
+          .input('userId', mssql.VarChar(500), userId)
+          .query(updateQuery);
+    
+        const updatedUser = result.recordset[0];
+    
+        // Check if any rows were affected
+        if (!updatedUser) {
+          return res.status(404).json({ error: 'User not found' });
+        }
+    
+        res.status(200).json(updatedUser);
+      } catch (error) {
+        console.error('Error updating user activation status:', error);
+        res.status(500).json({ error: 'Internal server error' });
+      }
+  };

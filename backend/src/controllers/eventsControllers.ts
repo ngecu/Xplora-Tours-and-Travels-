@@ -13,7 +13,7 @@ const dbhelper = new Connection
 
 export async function createEvent(req:Request, res:Response) {
     try {
-      let {start_date,destination,duration,price,category_id} = req.body
+      let {event_name,start_date,destination,description,image,duration,price,category_id} = req.body
 
       console.log(req.body);
       
@@ -33,7 +33,7 @@ export async function createEvent(req:Request, res:Response) {
     let event_id = v4()
 
     let result = dbhelper.execute('createEvent', {
-        event_id,destination,duration,start_date,price,category_id,
+        event_id,event_name,destination,duration,start_date,price,category_id,description,image
     })
 
     console.log(result);
@@ -51,28 +51,44 @@ export async function createEvent(req:Request, res:Response) {
   }
   
 
-  export const getIndividualEvent = async (req:Request, res:Response) => {
+  export const getIndividualEvent = async (req: Request, res: Response) => {
     try {
       const eventId = req.params.eventId;
   
-      const result = await dbhelper.query('SELECT * FROM events WHERE event_id = ?', [eventId]);
+      const result = await dbhelper.query(`SELECT * FROM events WHERE event_id = '${eventId}'`);
   
       if (result.recordset.length === 0) {
         return res.status(404).json({
+          status: 'Not Found',
           error: 'Event not found',
         });
       }
   
       const event = result.recordset[0];
   
+      // Calculate status based on start date
+      const today = new Date();
+      const eventStartDate = new Date(event.start_date);
+  
+      if (eventStartDate > today) {
+        event.status = 'Upcoming';
+      } else if (eventStartDate.toDateString() === today.toDateString()) {
+        event.status = 'Ongoing';
+      } else {
+        event.status = 'Past';
+      }
+  
       return res.status(200).json(event);
     } catch (error) {
       console.error(error);
       return res.status(500).json({
+        status: 'Internal Server Error',
         error: 'Internal server error',
       });
     }
   };
+  
+  
   
 
   export const updateEvent = async (req:Request, res:Response) => {
@@ -105,24 +121,7 @@ export async function createEvent(req:Request, res:Response) {
   };
   
 
-  export const getAlEvents =  async (req:ExtendedUser, res:Response)=>{
-    try {
 
-        const pool = await mssql.connect(sqlConfig)
-
-        let events = (await pool.request().execute('fetchAllEvents')).recordset
-       
-
-        return res.status(200).json({
-          events: events
-        })
-        
-    } catch (error) {
-        return res.json({
-            error: error
-        })
-    }
-}
 
 export const deleteEvent = async (req: ExtendedUser, res: Response) => {
   try {
@@ -135,7 +134,7 @@ export const deleteEvent = async (req: ExtendedUser, res: Response) => {
     const userExists = (await pool
       .request()
       .input('user_id', mssql.VarChar(100), event_id)
-      .execute('fetchOneEvent')).recordset;
+      .execute('deleteEvent')).recordset;
 
     if (!userExists.length) {
       return res.status(404).json({ error: 'Event not found' });
@@ -153,10 +152,28 @@ export const deleteEvent = async (req: ExtendedUser, res: Response) => {
 
 export const getAllEvents = async (req: ExtendedUser, res: Response) => {
   try {
-    const events = (await dbhelper.query('EXEC fetchAllEvents')).recordset;
+    const pool = await mssql.connect(sqlConfig);
+
+    let events = (await pool.request().execute('fetchAllEvents')).recordset;
+
+    // Add status logic to each event
+    const today = new Date();
+    const eventsWithStatus = events.map(event => {
+      const eventStartDate = new Date(event.start_date);
+      const eventEndDate = new Date(eventStartDate);
+      eventEndDate.setDate(eventEndDate.getDate() + event.duration);
+
+      if (eventStartDate <= today && today <= eventEndDate) {
+        return { ...event, status: 'Ongoing' };
+      } else if (eventStartDate > today) {
+        return { ...event, status: 'Upcoming' };
+      } else {
+        return { ...event, status: 'Past' };
+      }
+    });
 
     return res.status(200).json({
-      events: events,
+      events: eventsWithStatus,
     });
 
   } catch (error) {
@@ -165,6 +182,7 @@ export const getAllEvents = async (req: ExtendedUser, res: Response) => {
     });
   }
 };
+
 
 export const getOneEvent = async (req: Request, res: Response) => {
   try {
@@ -235,5 +253,29 @@ export const activateEvent = async (req: Request, res: Response) => {
       return res.status(500).json({
           error: error.message
       });
+  }
+};
+
+export const filterEventsByDestination = async (req: ExtendedUser, res: Response) => {
+  try {
+    const { destination } = req.params;
+
+    if (!destination) {
+      return res.status(400).json({
+        error: 'Destination parameter is missing.',
+      });
+    }
+
+    const query = `EXEC filterEventsByDestination @destination = '${destination}'`;
+    const filteredEvents = (await dbhelper.query(query)).recordset;
+
+    return res.status(200).json({
+      filteredEvents: filteredEvents,
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      error: 'Internal Server Error',
+    });
   }
 };

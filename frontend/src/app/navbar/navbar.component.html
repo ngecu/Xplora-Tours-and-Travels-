@@ -5,6 +5,13 @@
       <span class="text-2xl font-semibold whitespace-nowrap text-white">XPLORA T </span>
     </a>
 
+    <form [formGroup]="searchForm" class="hidden md:flex items-center space-x-4">
+      <input formControlName="searchTerm" type="text" placeholder="Search Tours" class="p-2 border border-gray-300 rounded-md" />
+      <button type="button" (click)="searchTours()" class="bg-gray-700 text-white px-4 py-2 rounded-md">Search</button>
+    </form>
+
+
+
     <div class="flex items-center space-x-4">
       <button type="button" data-collapse-toggle="navbar-search" aria-controls="navbar-search" aria-expanded="false" class="md:hidden text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5">
         <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -22,9 +29,9 @@
 
     <div class="hidden md:flex items-center justify-between w-auto" id="navbar-search">
       <ul class="flex flex-col md:flex-row md:space-x-8 rtl:space-x-reverse mt-4 md:mt-0 text-white">
-        <li *ngIf="loggedIn">
+        <!-- <li *ngIf="loggedIn">
           <a routerLink="/new_tour" class="hover:underline">New Tour</a>
-        </li>
+        </li> -->
 
           <li *ngIf="loggedIn">
           <a routerLink="/new_booking" class="hover:underline">Make Reservations</a>
@@ -35,9 +42,9 @@
         </li>
 
         
-        <li >
+        <!-- <li >
           <a routerLink="admin/tours" class="text-white hover:underline">All Tours</a>
-        </li>
+        </li> -->
 
         <li *ngIf="!loggedIn">
           <a routerLink="/register" class="text-white hover:underline">Register</a>

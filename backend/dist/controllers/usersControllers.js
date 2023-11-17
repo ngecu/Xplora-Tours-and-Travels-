@@ -23,7 +23,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.getOneUser = exports.getAllUsers = exports.checkUserDetails = exports.manageProfile = exports.activateUser = exports.deactivateUser = exports.loginUser = exports.registerUser = void 0;
+exports.updateUserActiveStatus = exports.deleteUser = exports.getOneUser = exports.getAllUsers = exports.checkUserDetails = exports.manageProfile = exports.activateUser = exports.deactivateUser = exports.loginUser = exports.registerUser = void 0;
 const mssql_1 = __importDefault(require("mssql"));
 const uuid_1 = require("uuid");
 const bcrypt_1 = __importDefault(require("bcrypt"));
@@ -254,3 +254,32 @@ const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.deleteUser = deleteUser;
+const updateUserActiveStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const userId = req.params.user_id;
+        const { active } = req.body;
+        console.log(req);
+        const updateQuery = `
+          UPDATE users
+          SET active = @active
+          WHERE user_id = @userId;
+          SELECT * FROM users WHERE user_id = @userId;
+        `;
+        const pool = yield mssql_1.default.connect(sqlConfig_1.sqlConfig);
+        const result = yield pool.request()
+            .input('active', mssql_1.default.Int, active)
+            .input('userId', mssql_1.default.VarChar(500), userId)
+            .query(updateQuery);
+        const updatedUser = result.recordset[0];
+        // Check if any rows were affected
+        if (!updatedUser) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        res.status(200).json(updatedUser);
+    }
+    catch (error) {
+        console.error('Error updating user activation status:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+exports.updateUserActiveStatus = updateUserActiveStatus;

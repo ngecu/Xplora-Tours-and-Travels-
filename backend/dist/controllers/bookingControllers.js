@@ -56,15 +56,29 @@ const getAllBookings = (req, res) => __awaiter(void 0, void 0, void 0, function*
 exports.getAllBookings = getAllBookings;
 const getUserBookings = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        let user_id = req.params.id;
-        const booking = (yield dbhelper.query(`EXEC getBookingById @user_id = '${user_id}'`)).recordset;
+        const user_id = req.params.id;
+        const bookings = (yield dbhelper.query(`EXEC getBookingById @user_id = '${user_id}'`)).recordset;
+        const today = new Date();
+        const bookingsWithStatus = bookings.map(booking => {
+            const bookingDate = new Date(booking.start_date);
+            // Compare the booking date with the current date
+            if (bookingDate >= today) {
+                // Date has not passed yet
+                return Object.assign(Object.assign({}, booking), { status: 'Upcoming' });
+            }
+            else {
+                // Date has passed
+                return Object.assign(Object.assign({}, booking), { status: 'Past' });
+            }
+        });
+        console.log(bookingsWithStatus);
         return res.status(200).json({
-            booking: booking,
+            bookings: bookingsWithStatus,
         });
     }
     catch (error) {
-        return res.json({
-            error: error,
+        return res.status(500).json({
+            error: error.message,
         });
     }
 });

@@ -18,7 +18,7 @@
       role="tab"
       aria-controls="tabs-home01"
       aria-selected="true"
-      >MY BOOKINGS</a
+      >MY BOOKINGS  {{bookings.length}}</a
     >
   </li>
   <li role="presentation" class="flex-auto text-center">
@@ -50,10 +50,21 @@
 
 
     <div class="bg-white p-4 rounded shadow-md text-center">
-      <h2 class="text-2xl font-semibold mb-4">Your Bookings {{bookings.length}}</h2>
+      <h2 class="text-2xl font-semibold mb-4">Your Bookings</h2>
       <ul>
         <li *ngFor="let booking of bookings" class="mb-2">
-          {{ booking.destination }} - {{ booking.date }} - {{ booking.price }}
+          {{ booking.destination }} - {{ booking.start_date }} - {{ booking.price }} {{booking.status}}
+
+          <br/>
+
+          <ng-container *ngIf="booking.status === 'Past'">
+            <!-- Display the 'Make Review' button with a routerLink -->
+            <a [routerLink]="['/make_review', booking.destination]" class="text-green-500">
+              Make Review
+            </a>
+          </ng-container>
+          
+          <a routerLink="/new_booking" class="text-blue-500">Book Now</a>
         </li>
         <div *ngIf="bookings.length === 0" class="text-gray-500">No bookings yet.
           <a routerLink="/new_booking" class="text-blue-500">Book Now</a>
@@ -75,7 +86,7 @@
       <h2 class="text-2xl font-semibold mb-4">Your Reviews</h2>
       <ul>
         <li *ngFor="let booking of bookings" class="mb-2">
-          {{ booking.destination }} - {{ booking.date }} - {{ booking.price }}
+          {{ booking.destination }} - {{ booking.start_date }} - 
         </li>
         <div *ngIf="bookings.length === 0" class="text-gray-500">
           No bookings yet. Make your first reservation with us!

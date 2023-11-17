@@ -26,6 +26,15 @@
               Profile Details
             </button>
        
+             <!-- Activate/Deactivate Button -->
+             <button *ngIf="user.active === 1" class="text-yellow-500 hover:text-white hover:bg-yellow-500 px-2 py-1 rounded cursor-pointer" (click)="toggleActivation(user)">
+              Deactivate
+            </button>
+
+            <button *ngIf="user.active !== 1" class="text-green-500 hover:text-white hover:bg-green-500 px-2 py-1 rounded cursor-pointer" (click)="toggleActivation(user)">
+              Activate
+            </button>
+            
             <button class="text-red-500 hover:text-white hover:bg-red-500 px-2 py-1 rounded cursor-pointer" (click)="deleteUser(user)">
               Delete User
             </button>

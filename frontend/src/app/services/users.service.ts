@@ -82,4 +82,36 @@ export class UsersService {
  
    }
 
+   async updateActivationStatus(user_id: string, newActivationStatus: number) {
+    try {
+      const token = localStorage.getItem('token') || '';
+      const url = `http://localhost:5000/user/${user_id}`;
+      const headers = {
+        'Content-Type': 'application/json',
+        'token': token
+      };
+      const xx = newActivationStatus.toString()
+
+      // Assume your backend expects an object with an 'active' property for the update
+      const requestBody = JSON.stringify({ active: xx });
+      console.log(requestBody);
+      
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: headers,
+        body: requestBody
+      });
+
+      const data = await response.json();
+
+      console.log(data);
+
+      return data;
+    } catch (error) {
+      console.error('Error updating activation status:', error);
+      throw error; // Rethrow the error for the component to handle
+    }
+  }
 }
+   
+

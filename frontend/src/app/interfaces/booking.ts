@@ -1,6 +1,7 @@
 export interface Booking {
     destination: string;
-    date: string;
+    start_date: string;
     price: number;
+    status?:string;
   }
   

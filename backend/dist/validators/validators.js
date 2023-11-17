@@ -19,6 +19,9 @@ exports.manageProfileSchema = joi_1.default.object({
 exports.createEventSchema = joi_1.default.object({
     destination: joi_1.default.string().required(),
     start_date: joi_1.default.string().required(),
+    description: joi_1.default.string().required(),
+    image: joi_1.default.string().required(),
+    event_name: joi_1.default.string().required(),
     duration: joi_1.default.number().integer().positive().required(),
     price: joi_1.default.number().precision(2).positive().required(),
     category_id: joi_1.default.string().required(),

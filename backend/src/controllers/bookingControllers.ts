@@ -50,23 +50,39 @@ export const getAllBookings = async (req: ExtendedUser, res: Response) => {
     });
   }
 };
-
 export const getUserBookings = async (req: Request, res: Response) => {
   try {
-    let user_id = req.params.id;
+    const user_id = req.params.id;
 
-    const booking = (await dbhelper.query(`EXEC getBookingById @user_id = '${user_id}'`)).recordset;
+    const bookings = (await dbhelper.query(`EXEC getBookingById @user_id = '${user_id}'`)).recordset;
 
-    return res.status(200).json({
-      booking: booking,
+    const today = new Date();
+    
+    const bookingsWithStatus = bookings.map(booking => {
+      const bookingDate = new Date(booking.start_date);
+      
+      // Compare the booking date with the current date
+      if (bookingDate >= today) {
+        // Date has not passed yet
+        return { ...booking, status: 'Upcoming' };
+      } else {
+        // Date has passed
+        return { ...booking, status: 'Past' };
+      }
     });
 
+    console.log(bookingsWithStatus);
+    
+    return res.status(200).json({
+      bookings: bookingsWithStatus,
+    });
   } catch (error) {
-    return res.json({
-      error: error,
+    return res.status(500).json({
+      error: error.message,
     });
   }
 };
+
 
 export const getOneBooking = async (req: Request, res: Response) => {
   try {

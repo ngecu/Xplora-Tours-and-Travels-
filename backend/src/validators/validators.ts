@@ -20,6 +20,9 @@ export const manageProfileSchema = joi.object({
 export const createEventSchema = joi.object({
     destination: joi.string().required(),
     start_date: joi.string().required(),
+    description: joi.string().required(),
+    image: joi.string().required(),
+    event_name: joi.string().required(),
 
     duration: joi.number().integer().positive().required(),
     price: joi.number().precision(2).positive().required(),

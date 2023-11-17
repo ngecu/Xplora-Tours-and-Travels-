@@ -17,6 +17,7 @@ import { ReviewsComponent } from './reviews/reviews.component';
 import { LandingComponent } from './landing/landing.component';
 import { TourComponent } from './tour/tour.component';
 import { NewBookingComponent } from './new-booking/new-booking.component';
+import { SearchpageComponent } from './searchpage/searchpage.component';
 
 const routes: Routes = [
   {path:'',component:LandingComponent},
@@ -37,9 +38,10 @@ const routes: Routes = [
 
   {path: 'categories', component: CategoriesComponent},
   {path: 'admin/:user_id', component: SingleuserComponent},
-  {path: 'tour/1', component: TourComponent},
+  {path: 'tour/:tour_id', component: TourComponent},
   {path: 'new_booking', component: NewBookingComponent},
 
+  {path: 'search', component: SearchpageComponent},
 
 ];
 

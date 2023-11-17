@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.activateEvent = exports.deactivateEvent = exports.getOneEvent = exports.getAllEvents = exports.deleteEvent = exports.getAlEvents = exports.updateEvent = exports.getIndividualEvent = exports.createEvent = void 0;
+exports.filterEventsByDestination = exports.activateEvent = exports.deactivateEvent = exports.getOneEvent = exports.getAllEvents = exports.deleteEvent = exports.updateEvent = exports.getIndividualEvent = exports.createEvent = void 0;
 const validators_1 = require("../validators/validators");
 const mssql_1 = __importDefault(require("mssql"));
 const uuid_1 = require("uuid");
@@ -23,7 +23,7 @@ const dbhelper = new dbhelpers_1.default;
 function createEvent(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            let { start_date, destination, duration, price, category_id } = req.body;
+            let { event_name, start_date, destination, description, image, duration, price, category_id } = req.body;
             console.log(req.body);
             let { error } = validators_1.createEventSchema.validate(req.body);
             if (error) {
@@ -35,7 +35,7 @@ function createEvent(req, res) {
             }
             let event_id = (0, uuid_1.v4)();
             let result = dbhelper.execute('createEvent', {
-                event_id, destination, duration, start_date, price, category_id,
+                event_id, event_name, destination, duration, start_date, price, category_id, description, image
             });
             console.log(result);
             return res.status(200).json({
@@ -52,18 +52,32 @@ exports.createEvent = createEvent;
 const getIndividualEvent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const eventId = req.params.eventId;
-        const result = yield dbhelper.query('SELECT * FROM events WHERE event_id = ?', [eventId]);
+        const result = yield dbhelper.query(`SELECT * FROM events WHERE event_id = '${eventId}'`);
         if (result.recordset.length === 0) {
             return res.status(404).json({
+                status: 'Not Found',
                 error: 'Event not found',
             });
         }
         const event = result.recordset[0];
+        // Calculate status based on start date
+        const today = new Date();
+        const eventStartDate = new Date(event.start_date);
+        if (eventStartDate > today) {
+            event.status = 'Upcoming';
+        }
+        else if (eventStartDate.toDateString() === today.toDateString()) {
+            event.status = 'Ongoing';
+        }
+        else {
+            event.status = 'Past';
+        }
         return res.status(200).json(event);
     }
     catch (error) {
         console.error(error);
         return res.status(500).json({
+            status: 'Internal Server Error',
             error: 'Internal server error',
         });
     }
@@ -95,21 +109,6 @@ const updateEvent = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.updateEvent = updateEvent;
-const getAlEvents = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const pool = yield mssql_1.default.connect(sqlConfig_1.sqlConfig);
-        let events = (yield pool.request().execute('fetchAllEvents')).recordset;
-        return res.status(200).json({
-            events: events
-        });
-    }
-    catch (error) {
-        return res.json({
-            error: error
-        });
-    }
-});
-exports.getAlEvents = getAlEvents;
 const deleteEvent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { event_id } = req.params;
@@ -118,7 +117,7 @@ const deleteEvent = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         const userExists = (yield pool
             .request()
             .input('user_id', mssql_1.default.VarChar(100), event_id)
-            .execute('fetchOneEvent')).recordset;
+            .execute('deleteEvent')).recordset;
         if (!userExists.length) {
             return res.status(404).json({ error: 'Event not found' });
         }
@@ -134,9 +133,26 @@ const deleteEvent = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.deleteEvent = deleteEvent;
 const getAllEvents = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const events = (yield dbhelper.query('EXEC fetchAllEvents')).recordset;
+        const pool = yield mssql_1.default.connect(sqlConfig_1.sqlConfig);
+        let events = (yield pool.request().execute('fetchAllEvents')).recordset;
+        // Add status logic to each event
+        const today = new Date();
+        const eventsWithStatus = events.map(event => {
+            const eventStartDate = new Date(event.start_date);
+            const eventEndDate = new Date(eventStartDate);
+            eventEndDate.setDate(eventEndDate.getDate() + event.duration);
+            if (eventStartDate <= today && today <= eventEndDate) {
+                return Object.assign(Object.assign({}, event), { status: 'Ongoing' });
+            }
+            else if (eventStartDate > today) {
+                return Object.assign(Object.assign({}, event), { status: 'Upcoming' });
+            }
+            else {
+                return Object.assign(Object.assign({}, event), { status: 'Past' });
+            }
+        });
         return res.status(200).json({
-            events: events,
+            events: eventsWithStatus,
         });
     }
     catch (error) {
@@ -211,3 +227,24 @@ const activateEvent = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.activateEvent = activateEvent;
+const filterEventsByDestination = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { destination } = req.params;
+        if (!destination) {
+            return res.status(400).json({
+                error: 'Destination parameter is missing.',
+            });
+        }
+        const query = `EXEC filterEventsByDestination @destination = '${destination}'`;
+        const filteredEvents = (yield dbhelper.query(query)).recordset;
+        return res.status(200).json({
+            filteredEvents: filteredEvents,
+        });
+    }
+    catch (error) {
+        return res.status(500).json({
+            error: 'Internal Server Error',
+        });
+    }
+});
+exports.filterEventsByDestination = filterEventsByDestination;

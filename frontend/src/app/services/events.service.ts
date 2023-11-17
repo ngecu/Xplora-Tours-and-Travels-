@@ -8,10 +8,17 @@ export class EventsService {
 
   constructor() { }
 
-  async getEvents(){
+  async getEvents(destination?: string) {
     let token = localStorage.getItem('token') as string;
-    let res = await fetch('http://localhost:5000/events/allEvents', {
-      headers:{
+
+    // Modify the URL based on whether a destination is provided
+    let url = 'http://localhost:5000/events/allEvents';
+    if (destination) {
+      url += `?destination=${destination}`;
+    }
+
+    let res = await fetch(url, {
+      headers: {
         "Content-type": "application/json",
         "token": token
       }
@@ -50,7 +57,7 @@ export class EventsService {
 
     let data = await res.json();
 
-    return data.event;
+    return data;
   }
 
   async deleteEvent(event_id: string){
