@@ -78,18 +78,22 @@ export class UsersComponent {
 
   async toggleActivation(user: User) {
     try {
-      // Toggle the activation status
-      const newActivationStatus = user.active === 1 ? 0 : 1;
+          
+      const newActivationStatus:number = user.active === 1 ? 0 : 1 ;
+      // console.log("new active status is ",newActivationStatus);
 
-      // Call your service method to update the activation status using async/await
-      const response = await this.usersService.updateActivationStatus(user.user_id as string, newActivationStatus)
+      const response = await this.usersService.updateActivationStatus(user.user_id as string, newActivationStatus);
+        // let responseData = await response.json();
 
-      // Update the local user object with the new activation status
+        console.log("reposne data is ",response);
+        
+        
+     
       user.active = newActivationStatus;
-      console.log(`User ${user.full_name} is now ${newActivationStatus === 1 ? 'activated' : 'deactivated'}.`);
+      // console.log(`User ${user.full_name} is now ${newActivationStatus === 1 ? 'activated' : 'deactivated'}.`);
     } catch (error) {
       console.error('Error toggling activation status:', error);
-      // Handle error as needed
     }
   }
+  
 }

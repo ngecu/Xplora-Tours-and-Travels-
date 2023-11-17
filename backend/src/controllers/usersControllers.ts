@@ -13,7 +13,6 @@ const dbhelper = new Connection
  
 export const registerUser = async(req:Request, res: Response) =>{
     try {
-        console.log(req.body);
         
         let {full_name,email,phone_number,password} = req.body
 
@@ -87,7 +86,7 @@ export const loginUser = async(req: Request, res: Response) => {
             });
 
             const token = jwt.sign(LoginCredentials[0], process.env.SECRET as string);
-
+       
             return res.status(200).json({
                 message: "Logged in successfully", token
             });

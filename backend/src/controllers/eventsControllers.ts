@@ -96,6 +96,8 @@ export async function createEvent(req:Request, res:Response) {
       const eventId = req.params.eventId;
       const { destination, duration, start_date, price, category_id } = req.body;
   
+      console.log(eventId,req.body);
+      
       // Validate input data here if needed
   
       const result = await dbhelper.execute('UPDATE events SET destination=?, duration=?, start_date=?, price=?, category_id=? WHERE event_id=?', [

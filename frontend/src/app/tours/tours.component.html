@@ -22,7 +22,7 @@
           </p>
         </div>
         <div class="bg-gray-100 py-2 px-4 flex justify-between items-center">
-          <a [routerLink]="'/tour/' + event.event_id" class="view-btn text-blue-500 hover:underline">View Details</a>
+          <!-- <a [routerLink]="'/tour/' + event.event_id" class="view-btn text-blue-500 hover:underline">View Details</a> -->
           <!-- Add other buttons or actions as needed -->
 
           <div class="flex space-x-2">
@@ -32,9 +32,7 @@
             <button class="text-green-500 hover:text-white hover:bg-green-500 px-2 py-1 rounded cursor-pointer" (click)="editTour(event)">
               Edit
             </button>
-            <button class="text-red-500 hover:text-white hover:bg-red-500 px-2 py-1 rounded cursor-pointer" (click)="deleteTour(event)">
-              Delete
-            </button>
+        
           </div>
 
         </div>

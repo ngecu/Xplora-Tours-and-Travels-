@@ -80,7 +80,7 @@ export class EventsService {
 
     async getEventsBySearchTerm(searchTerm: string){
 
-    let response = await fetch(`http://localhost:5000/events/filter/${searchTerm}`,{
+    let response = await fetch(`http://localhost:5000/events/filter/?search${searchTerm}`,{
       headers:{
         "Content-Type":"application/json",
       },
@@ -92,6 +92,31 @@ export class EventsService {
     console.log(data);
 
     return data;
+  }
+
+  private apiUrl = 'http://localhost:5000/events';
+
+  async updateTourDetails(updatedEvent: Event): Promise<Event> {
+    const token = localStorage.getItem('token') || '';
+    const url = `${this.apiUrl}/${updatedEvent.event_id}`;
+
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'token': token,
+        },
+        body: JSON.stringify(updatedEvent),
+      });
+
+      const data = await response.json();
+      console.log('Tour details updated successfully', data);
+      return data;
+    } catch (error) {
+      console.error('Error updating tour details', error);
+      throw error; // Rethrow the error for the component to handle
+    }
   }
 
 

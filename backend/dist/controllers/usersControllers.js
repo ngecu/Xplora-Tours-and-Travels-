@@ -35,7 +35,6 @@ const lodash_1 = require("lodash");
 const dbhelper = new dbhelpers_1.default;
 const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        console.log(req.body);
         let { full_name, email, phone_number, password } = req.body;
         let { error } = validators_1.registerUserSchema.validate(req.body);
         if (error) {

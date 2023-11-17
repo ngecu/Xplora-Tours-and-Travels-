@@ -87,6 +87,7 @@ const updateEvent = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     try {
         const eventId = req.params.eventId;
         const { destination, duration, start_date, price, category_id } = req.body;
+        console.log(eventId, req.body);
         // Validate input data here if needed
         const result = yield dbhelper.execute('UPDATE events SET destination=?, duration=?, start_date=?, price=?, category_id=? WHERE event_id=?', [
             destination,

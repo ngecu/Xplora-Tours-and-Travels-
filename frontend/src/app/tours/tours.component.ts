@@ -45,7 +45,7 @@ export class ToursComponent {
 
     console.log(event.event_id);
     
-    this.router.navigate(['admin','edit', event.event_id])
+    this.router.navigate(['admin','edittour', event.event_id])
 
   }
 

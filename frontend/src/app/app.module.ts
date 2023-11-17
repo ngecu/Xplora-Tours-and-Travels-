@@ -26,6 +26,9 @@ import { LandingComponent } from './landing/landing.component';
 import { FooterComponent } from './footer/footer.component';
 import { NewBookingComponent } from './new-booking/new-booking.component';
 import { SearchpageComponent } from './searchpage/searchpage.component';
+import { EdittourComponent } from './edittour/edittour.component';
+import { PlanpageComponent } from './planpage/planpage.component';
+import { AboutpageComponent } from './aboutpage/aboutpage.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +54,10 @@ import { SearchpageComponent } from './searchpage/searchpage.component';
     FooterComponent,
     SingleuserComponent,
     NewBookingComponent,
-    SearchpageComponent
+    SearchpageComponent,
+    EdittourComponent,
+    PlanpageComponent,
+    AboutpageComponent
   ],
   imports: [
     AppRoutingModule,
