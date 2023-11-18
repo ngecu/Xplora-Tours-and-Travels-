@@ -34,3 +34,41 @@
     /* Add additional styling based on your design */
   }
   
+
+  .dark\:overlay::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Adjust the alpha channel (0.5) for darkness */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .dark\:overlay:hover::before {
+    opacity: 1;
+  }
+  
+  .hover\:scale-105:hover {
+    transform: scale(1.05);
+  }
+  
+
+  .dark-overlay::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Adjust the alpha channel (0.5) for darkness */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .hover-scale:hover {
+    transform: scale(1.05);
+  }
+  

@@ -23,28 +23,30 @@ import { EdittourComponent } from './edittour/edittour.component';
 const routes: Routes = [
   {path:'',component:LandingComponent},
   {path:'login',component:LoginComponent},
-
   {path:'register',component:RegisterComponent},
   {path:'profile',component:ProfileComponent},
+  
   {path:'user',component:UserDashboardComponent},
+  {path: 'new_category', component: NewCategoryComponent},
+  {path: 'new_tour', component: NewTourComponent},
+  {path: 'categories', component: CategoriesComponent},
+
+  {path: 'admin/edittour/:tour_id', component: EdittourComponent},
   {path:'admin',component:AdminDashboardComponent},
-  {path:'admin/tours',component:ToursComponent},
+  {path:'tours',component:ToursComponent},
   {path:'admin/users',component:UsersComponent},
   {path: 'admin/edit/:user_id', component: UserEditComponent},
   {path: 'admin/bookings', component: BookingsComponent},
   {path: 'admin/reviews', component: ReviewsComponent},
-
-  {path: 'new_category', component: NewCategoryComponent},
-  {path: 'new_tour', component: NewTourComponent},
-
-  {path: 'categories', component: CategoriesComponent},
   {path: 'admin/:user_id', component: SingleuserComponent},
-  {path: 'tour/:tour_id', component: TourComponent},
-  {path: 'admin/edittour/:tour_id', component: EdittourComponent},
 
   {path: 'new_booking', component: NewBookingComponent},
   
   {path: 'search', component: SearchpageComponent},
+
+
+  {path: 'tour/:tour_id', component: TourComponent},
+
 
 ];
 

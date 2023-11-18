@@ -263,8 +263,8 @@ export const filterEventsByDestination = async (req: ExtendedUser, res: Response
     const searchTerm = req.params.searchTerm;
 
     const pool = await mssql.connect(sqlConfig);
-
-    // Assuming you have a stored procedure named 'filterEventsBySearchTerm'
+    console.log(searchTerm);
+    
     const result = await pool.request()
       .input('searchTerm', mssql.NVarChar(255), `%${searchTerm}%`)
       .execute('filterEventsBySearchTerm');

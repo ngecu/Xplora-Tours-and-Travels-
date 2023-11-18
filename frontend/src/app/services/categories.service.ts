@@ -18,7 +18,8 @@ export class CategoriesService {
     })
 
     let data = await res.json()
-
+    console.log("dat ",data);
+    
     return data
     
   }

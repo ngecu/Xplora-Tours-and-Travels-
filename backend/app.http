@@ -16,3 +16,13 @@ Content-Type: application/json
     "email": "admin@gmail.com",
     "password": "3W!W.:srzc4r^!P"
 }
+
+###
+GET http://localhost:5000/category/allCategories
+Content-Type: application/json
+
+
+###
+GET http://localhost:5000/category/getCategoriesWithTours
+Content-Type: application/json
+

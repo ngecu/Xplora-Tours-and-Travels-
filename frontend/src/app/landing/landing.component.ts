@@ -1,6 +1,11 @@
 import { Component } from '@angular/core';
 import { Event } from '../interfaces/event';
 import { EventsService } from '../services/events.service';
+import {
+  Carousel,
+  initTE,
+} from "tw-elements";
+import { CategoriesService } from '../services/categories.service';
 
 @Component({
   selector: 'app-landing',
@@ -11,10 +16,18 @@ export class LandingComponent {
   events:Event[] = []
   upcomingEvents: Event[] = []
   pastEvents: Event[] = []
+  categories: any[] = [];
+  // Add these properties to your component class
+isDarkOverlay: boolean = false;
+isHovered: boolean = false;
+
   
-  constructor(private eventsService: EventsService,){
+  constructor(private eventsService: EventsService, private categoriesService: CategoriesService,){
     this.getTourss()
+    this.getCategories();
+    initTE({ Carousel });
   }
+
 
 
    async getTourss(){
@@ -33,4 +46,17 @@ export class LandingComponent {
     return text;
   }
   
+  async getCategories() {
+    try {
+      const response = await this.categoriesService.geCategroies();
+      if (response) {
+        console.log(response);
+        
+        this.categories = response;
+      }
+    } catch (error) {
+      console.error('Error fetching categories', error);
+    }
+  }
+
 }

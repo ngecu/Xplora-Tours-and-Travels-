@@ -11,6 +11,10 @@ import { EventsService } from '../services/events.service';
 export class TourComponent  {
   tour!: Event;
   events:Event[] = []
+
+  loggedInTrue = localStorage.getItem('loggedIn');
+  loggedIn = this.loggedInTrue;
+
   constructor(private route: ActivatedRoute, private eventService: EventsService) { 
     this.getTourss()
 

@@ -4,8 +4,8 @@ import { verifyToken } from "../middlewares/verifyToken";
 
 const event_router = Router();
 
-event_router.get("/allEvents",verifyToken,getAllEvents)
-event_router.get('/:eventId', verifyToken, getIndividualEvent)
+event_router.get("/allEvents",getAllEvents)
+event_router.get('/:eventId', getIndividualEvent)
 event_router.delete('/:event_id', verifyToken, deleteEvent)
 event_router.put('/:event_id', verifyToken, updateEvent)
 event_router.get('/filter/:searchTerm', filterEventsByDestination)

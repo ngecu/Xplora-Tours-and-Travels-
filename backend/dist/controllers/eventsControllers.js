@@ -232,7 +232,7 @@ const filterEventsByDestination = (req, res) => __awaiter(void 0, void 0, void 0
     try {
         const searchTerm = req.params.searchTerm;
         const pool = yield mssql_1.default.connect(sqlConfig_1.sqlConfig);
-        // Assuming you have a stored procedure named 'filterEventsBySearchTerm'
+        console.log(searchTerm);
         const result = yield pool.request()
             .input('searchTerm', mssql_1.default.NVarChar(255), `%${searchTerm}%`)
             .execute('filterEventsBySearchTerm');
