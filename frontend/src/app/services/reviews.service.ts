@@ -7,6 +7,30 @@ export class ReviewsService {
 
   constructor() { }
 
+
+  async createReview(rating: number,comment:string,user_id:string) {
+    const url = `http://localhost:5000/review/create`;
+
+  const reviewData = {
+    rating,
+    comment,
+    user_id
+  }
+    let response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(reviewData),
+      })
+
+      const data = await response.json()
+
+      return data
+       
+   
+  }
+
   async getReviews(){
     let token = localStorage.getItem('token') as string;
     let res = await fetch('http://localhost:5000/review/allReviews', {
@@ -58,5 +82,20 @@ export class ReviewsService {
      return data
  
    }
+
+   async getUserReviews(user_id:string){
+    let token = localStorage.getItem('token') as string;
+    let res = await fetch(`http://localhost:5000/review/${user_id}`, {
+      headers:{
+        "Content-type": "application/json",
+        "token": token
+      }
+    })
+
+    let data = await res.json()
+
+    return data
+    
+  }
 
 }

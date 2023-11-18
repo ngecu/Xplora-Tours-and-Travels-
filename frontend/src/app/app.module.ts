@@ -29,6 +29,7 @@ import { SearchpageComponent } from './searchpage/searchpage.component';
 import { EdittourComponent } from './edittour/edittour.component';
 import { PlanpageComponent } from './planpage/planpage.component';
 import { AboutpageComponent } from './aboutpage/aboutpage.component';
+import { CreateReviewComponent } from './create-review/create-review.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { AboutpageComponent } from './aboutpage/aboutpage.component';
     SearchpageComponent,
     EdittourComponent,
     PlanpageComponent,
-    AboutpageComponent
+    AboutpageComponent,
+    CreateReviewComponent
   ],
   imports: [
     AppRoutingModule,

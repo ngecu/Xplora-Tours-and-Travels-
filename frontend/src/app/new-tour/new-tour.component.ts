@@ -13,13 +13,24 @@ import { CategoriesService } from '../services/categories.service';
 export class NewTourComponent implements OnInit {
   eventForm!: FormGroup;
   categories: any[] = [];
+  role: number;
 
   constructor(
     private formBuilder: FormBuilder,
     private eventsService: EventsService,
     private categoriesService: CategoriesService,
     private router: Router
-  ) {}
+  ) {
+
+    const roleFromLocalStorage = localStorage.getItem('role');
+    this.role = roleFromLocalStorage ? parseInt(roleFromLocalStorage, 10) : 0;
+
+    if (this.role !== 1) {
+      this.router.navigate(['']);
+    }
+
+
+  }
 
   ngOnInit(): void {
     this.eventForm = this.formBuilder.group({

@@ -10,9 +10,16 @@ import { Category } from '../interfaces/category';
 })
 export class CategoriesComponent {
   categories:Category[] = []
+  role: number;
 
   constructor(private categoriesService: CategoriesService, private router: Router){
-    // this.fetchEmployees()
+       const roleFromLocalStorage = localStorage.getItem('role');
+    // Parse the string to a number or use a default value if it's not a valid number
+    this.role = roleFromLocalStorage ? parseInt(roleFromLocalStorage, 10) : 0;
+
+    if (this.role !== 1) {
+      this.router.navigate(['']);
+    }
 
     this.getCategories()
   }

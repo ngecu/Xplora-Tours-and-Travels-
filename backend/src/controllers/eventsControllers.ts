@@ -66,7 +66,7 @@ export async function createEvent(req:Request, res:Response) {
   
       const event = result.recordset[0];
   
-      // Calculate status based on start date
+     
       const today = new Date();
       const eventStartDate = new Date(event.start_date);
   
@@ -133,16 +133,16 @@ export const deleteEvent = async (req: ExtendedUser, res: Response) => {
 
     const pool = await mssql.connect(sqlConfig);
 
-    const userExists = (await pool
+    const eventExists = (await pool
       .request()
-      .input('user_id', mssql.VarChar(100), event_id)
+      .input('event_id', mssql.VarChar(100), event_id)
       .execute('deleteEvent')).recordset;
 
-    if (!userExists.length) {
+    if (!eventExists.length) {
       return res.status(404).json({ error: 'Event not found' });
     }
 
-    await pool.request().input('user_id', mssql.VarChar(100), event_id).execute('deleteEvent');
+    await pool.request().input('event_id', mssql.VarChar(100), event_id).execute('deleteEvent');
 
     return res.status(200).json({message:"Deleted Successfully"}); // Successful deletion, no content response
   } catch (error) {
@@ -288,4 +288,38 @@ export const filterEventsByDestination = async (req: ExtendedUser, res: Response
   }
 };
 
+export const updateEventActiveStatus = async (req: ExtendedUser, res: Response) => {
+  try {
+      const eventId = req.params.event_id;
+      const { active } = req.body;
 
+      console.log(req);
+      
+  
+      const updateQuery = `
+        UPDATE events
+        SET active = @active
+        WHERE event_id = @event_id;
+        SELECT * FROM events WHERE event_id = @eventId;
+      `;
+  
+      const pool = await mssql.connect(sqlConfig);
+  
+      const result = await pool.request()
+        .input('active', mssql.Int, active)
+        .input('eventId', mssql.VarChar(500), eventId)
+        .query(updateQuery);
+  
+      const updatedEvent = result.recordset[0];
+  
+      // Check if any rows were affected
+      if (!updatedEvent) {
+        return res.status(404).json({ error: 'Event not found' });
+      }
+  
+      res.status(200).json(updatedEvent);
+    } catch (error) {
+      console.error('Error updating event activation status:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+};

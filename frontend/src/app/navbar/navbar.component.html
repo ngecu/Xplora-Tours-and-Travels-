@@ -44,11 +44,12 @@ class="relative flex w-full flex-nowrap items-center justify-between bg-neutral-
           loading="lazy" />
       </a>
       <!-- Left navigation links -->
-      <form class="hidden md:flex">
+      <form [formGroup]="searchForm" ngSubmit="searchTours()" class="hidden md:flex">
         <input
+        formControlName="searchTerm"
           type="search"
           class="relative m-0 block w-[250px] min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-500 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary motion-reduce:transition-none"
-          placeholder="Search"
+          placeholder="Search Tour..."
           aria-label="Search"
           aria-describedby="button-addon2"
         />
@@ -57,6 +58,7 @@ class="relative flex w-full flex-nowrap items-center justify-between bg-neutral-
         <span
           class="input-group-text flex items-center whitespace-nowrap rounded px-3 text-center text-base font-normal text-neutral-700 dark:text-neutral-200"
           id="basic-addon2"
+          (click)="searchTours()"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

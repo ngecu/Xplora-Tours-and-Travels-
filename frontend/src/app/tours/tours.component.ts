@@ -12,6 +12,7 @@ export class ToursComponent {
   events:Event[] = []
   error:boolean = false;
   errorMessage:string = ''
+  role = Number(localStorage.getItem('role')) ;
 
     constructor(private eventsService: EventsService, private router: Router){
     // this.fetchEmployees()
@@ -75,6 +76,13 @@ export class ToursComponent {
 
   }
 
+  }
+
+  truncateText(text: string, maxLength: number): string {
+    if (text.length > maxLength) {
+      return text.substring(0, maxLength) + '...';
+    }
+    return text;
   }
 
 }

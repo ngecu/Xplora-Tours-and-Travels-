@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EventsService } from '../services/events.service';
 import { CategoriesService } from '../services/categories.service';
@@ -13,13 +13,22 @@ export class EdittourComponent implements OnInit {
   editForm!: FormGroup;
   eventId!: string;
   categories: any[] = [];
+  role: number;
 
   constructor(
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
     private eventsService: EventsService,
     private categoriesService: CategoriesService,
-  ) {}
+    private router: Router
+    ) {
+    const roleFromLocalStorage = localStorage.getItem('role');
+    this.role = roleFromLocalStorage ? parseInt(roleFromLocalStorage, 10) : 0;
+
+    if (this.role !== 1) {
+      this.router.navigate(['']);
+    }
+  }
 
   ngOnInit() {
     this.editForm = this.formBuilder.group({

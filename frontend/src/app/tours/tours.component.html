@@ -6,34 +6,34 @@
 
   <div class="bg-white p-4 rounded shadow-md mt-8">
     <div class="flex justify-between items-center mb-4">
-      <h2 class="text-2xl font-semibold mb-4">Tour Management Data Table</h2>
-      <a routerLink="/new_tour" class="text-white bg-blue-500 px-4 py-2 rounded hover:bg-blue-600 ml-auto">Add Tour</a>
+      <h2 class="text-2xl font-semibold mb-4">Tours</h2>
+      <a ngIf="role == 1"  routerLink="/new_tour" class="text-white bg-blue-500 px-4 py-2 rounded hover:bg-blue-600 ml-auto">Add Tour</a>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-      <!-- Filled dynamically with JavaScript or server data -->
       <div *ngFor="let event of events" class="bg-white rounded-md overflow-hidden shadow-md">
-        <!-- Assuming event has an 'image_url' property for the image source -->
-        <img src="https://tembeatujengekenya.com/wp-content/uploads/2014/06/staycation-773x520.jpeg" alt="Tour Image" class="w-full h-48 object-cover mb-4">
+        <img src="{{event.image}}" alt="Tour Image" class="w-full h-48 object-cover mb-4">
         <div class="p-4">
-          <h3 class="text-xl font-semibold mb-2">{{event.destination}}</h3>
-          <p class="text-gray-600 mb-4">Experience the beauty of Kenyan wildlife on this exciting safari adventure</p>
+          <h3 class="text-xl font-semibold mb-2">
+            <a routerLink="tour/{{event.event_id}}">
+            {{event.destination}}
+          </a>
+          </h3>
+          <p class="text-gray-600 mb-4">{{ truncateText(event.description, 150) }}</p>
           <p class="text-sm text-gray-500">
             {{ event.duration }} Days ${{ event.price }}
           </p>
         </div>
         <div class="bg-gray-100 py-2 px-4 flex justify-between items-center">
-          <!-- <a [routerLink]="'/tour/' + event.event_id" class="view-btn text-blue-500 hover:underline">View Details</a> -->
-          <!-- Add other buttons or actions as needed -->
-
-          <div class="flex space-x-2">
-            <button class="text-blue-500 hover:text-white hover:bg-blue-500 px-2 py-1 rounded cursor-pointer" (click)="showTourDetails(event)">
-              Details
-            </button>
-            <button class="text-green-500 hover:text-white hover:bg-green-500 px-2 py-1 rounded cursor-pointer" (click)="editTour(event)">
-              Edit
-            </button>
-        
-          </div>
+          <div [ngClass]="{
+            'bg-green-500': event.status === 'Ongoing',
+            'bg-red-500': event.status === 'Past',
+            'bg-yellow-500': event.status === 'Upcoming'
+          }" 
+          class="py-2 px-4 flex justify-between items-center">
+        <span class="text-white font-bold">
+          {{event.status}}
+        </span>
+      </div>
 
         </div>
       </div>

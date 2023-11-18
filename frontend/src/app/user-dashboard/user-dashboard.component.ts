@@ -36,5 +36,13 @@ export class UserDashboardComponent {
   
   }
 
+  async getMyReviews(){
+    let response = await this.bookingsService.getUserBookings(this.user_id)
+  console.log("booking ",response.bookings);
+
+  this.bookings = response.bookings
+  
+  }
+
 
 }

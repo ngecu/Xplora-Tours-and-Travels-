@@ -12,9 +12,16 @@ export class UsersComponent {
   users:User[] = []
   error:boolean = false;
   errorMessage:string = ''
-
+  role: number;
+  
   constructor(private usersService: UsersService, private router: Router){
-    // this.fetchEmployees()
+  
+    const roleFromLocalStorage = localStorage.getItem('role');
+    this.role = roleFromLocalStorage ? parseInt(roleFromLocalStorage, 10) : 0;
+
+    if (this.role !== 1) {
+      this.router.navigate(['']);
+    }
 
     this.getUsers()
   }

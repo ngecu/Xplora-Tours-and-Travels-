@@ -10,9 +10,7 @@ const dbhelper = new Connection;
 export const createReview = async (req: Request, res: Response) => {
   try {
     const { rating, comment, user_id } = req.body;
-
-    // Validate input data here if needed
-
+    
     const review_id = v4();
 
     const result = await dbhelper.execute('createReview', {

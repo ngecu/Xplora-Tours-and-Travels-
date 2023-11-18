@@ -19,6 +19,7 @@ import { TourComponent } from './tour/tour.component';
 import { NewBookingComponent } from './new-booking/new-booking.component';
 import { SearchpageComponent } from './searchpage/searchpage.component';
 import { EdittourComponent } from './edittour/edittour.component';
+import { CreateReviewComponent } from './create-review/create-review.component';
 
 const routes: Routes = [
   {path:'',component:LandingComponent},
@@ -46,8 +47,7 @@ const routes: Routes = [
 
 
   {path: 'tour/:tour_id', component: TourComponent},
-
-
+  {path: 'make_review/:booking_id', component: CreateReviewComponent}
 ];
 
 @NgModule({

@@ -19,7 +19,6 @@ const dbhelper = new dbhelpers_1.default;
 const createReview = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { rating, comment, user_id } = req.body;
-        // Validate input data here if needed
         const review_id = (0, uuid_1.v4)();
         const result = yield dbhelper.execute('createReview', {
             review_id,

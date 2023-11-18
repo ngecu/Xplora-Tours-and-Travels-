@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.filterEventsByDestination = exports.activateEvent = exports.deactivateEvent = exports.getOneEvent = exports.getAllEvents = exports.deleteEvent = exports.updateEvent = exports.getIndividualEvent = exports.createEvent = void 0;
+exports.updateEventActiveStatus = exports.filterEventsByDestination = exports.activateEvent = exports.deactivateEvent = exports.getOneEvent = exports.getAllEvents = exports.deleteEvent = exports.updateEvent = exports.getIndividualEvent = exports.createEvent = void 0;
 const validators_1 = require("../validators/validators");
 const mssql_1 = __importDefault(require("mssql"));
 const uuid_1 = require("uuid");
@@ -60,7 +60,6 @@ const getIndividualEvent = (req, res) => __awaiter(void 0, void 0, void 0, funct
             });
         }
         const event = result.recordset[0];
-        // Calculate status based on start date
         const today = new Date();
         const eventStartDate = new Date(event.start_date);
         if (eventStartDate > today) {
@@ -115,14 +114,14 @@ const deleteEvent = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         const { event_id } = req.params;
         console.log(event_id);
         const pool = yield mssql_1.default.connect(sqlConfig_1.sqlConfig);
-        const userExists = (yield pool
+        const eventExists = (yield pool
             .request()
-            .input('user_id', mssql_1.default.VarChar(100), event_id)
+            .input('event_id', mssql_1.default.VarChar(100), event_id)
             .execute('deleteEvent')).recordset;
-        if (!userExists.length) {
+        if (!eventExists.length) {
             return res.status(404).json({ error: 'Event not found' });
         }
-        yield pool.request().input('user_id', mssql_1.default.VarChar(100), event_id).execute('deleteEvent');
+        yield pool.request().input('event_id', mssql_1.default.VarChar(100), event_id).execute('deleteEvent');
         return res.status(200).json({ message: "Deleted Successfully" }); // Successful deletion, no content response
     }
     catch (error) {
@@ -253,3 +252,32 @@ const filterEventsByDestination = (req, res) => __awaiter(void 0, void 0, void 0
     }
 });
 exports.filterEventsByDestination = filterEventsByDestination;
+const updateEventActiveStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const eventId = req.params.event_id;
+        const { active } = req.body;
+        console.log(req);
+        const updateQuery = `
+        UPDATE events
+        SET active = @active
+        WHERE event_id = @event_id;
+        SELECT * FROM events WHERE event_id = @eventId;
+      `;
+        const pool = yield mssql_1.default.connect(sqlConfig_1.sqlConfig);
+        const result = yield pool.request()
+            .input('active', mssql_1.default.Int, active)
+            .input('eventId', mssql_1.default.VarChar(500), eventId)
+            .query(updateQuery);
+        const updatedEvent = result.recordset[0];
+        // Check if any rows were affected
+        if (!updatedEvent) {
+            return res.status(404).json({ error: 'Event not found' });
+        }
+        res.status(200).json(updatedEvent);
+    }
+    catch (error) {
+        console.error('Error updating event activation status:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+exports.updateEventActiveStatus = updateEventActiveStatus;

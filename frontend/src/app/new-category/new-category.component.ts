@@ -10,8 +10,17 @@ import { CategoriesService } from '../services/categories.service';
 })
 export class NewCategoryComponent {
   categoryForm!: FormGroup;
-
+  role: number;
+  
   constructor(private formBuilder: FormBuilder, private categoriesService: CategoriesService, private router: Router) {
+    
+    const roleFromLocalStorage = localStorage.getItem('role');
+    this.role = roleFromLocalStorage ? parseInt(roleFromLocalStorage, 10) : 0;
+
+    if (this.role !== 1) {
+      this.router.navigate(['']);
+    }
+
     this.categoryForm = this.formBuilder.group({
       category_name: ['', Validators.required],
     });
