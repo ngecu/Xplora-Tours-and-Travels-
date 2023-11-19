@@ -5,11 +5,11 @@ import bcrypt from 'bcrypt'
 import { sqlConfig } from '../config/sqlConfig'
 import jwt from 'jsonwebtoken'
 import Connection from '../dbhelpers/dbhelpers'
-import { manageProfileSchema, registerUserSchema } from '../validators/validators'
+import { registerUserSchema } from '../validators/validators'
 import { isEmpty } from 'lodash'
 import { ExtendedUser } from '../middlewares/verifyToken'
 
-const dbhelper = new Connection
+export const dbhelper = new Connection
  
 export const registerUser = async(req:Request, res: Response) =>{
     try {
